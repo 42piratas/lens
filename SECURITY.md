@@ -4,13 +4,7 @@ We take security seriously. Thank you for taking the time to disclose responsibl
 
 ## Supported versions
 
-LENS is in active development and ships from the `staging` branch (preview / dev) and `main` branch (production). Security fixes land on both. There are no LTS branches and no backports to older tags.
-
-| Branch | Status |
-|:--|:--|
-| `main` | ✅ Receives security fixes |
-| `staging` | ✅ Receives security fixes |
-| Older tags | ❌ Not supported |
+The latest commit on `main` is the supported version. Security fixes ship on `main`; the `staging` deploy environment tracks `main`. There are no LTS branches and no backports to older tags.
 
 ## Reporting a vulnerability
 
