@@ -1,0 +1,78 @@
+/* ============================================================
+   Tokyo Night — mirrored from Tokyo Night Storm by enkia.
+   Source: https://github.com/enkia/tokyo-night-vscode-theme
+   ============================================================ */
+[data-theme="tokyo-night"] {
+  /* Surface — Storm variant blue-charcoal */
+  --surface: #24283b;        /* editor.background (Storm) */
+  --surface-alt: #1f2335;    /* Dock / popover */
+  --surface-muted: #1f2335;
+  --surface-raised: #292e42; /* inactive selection */
+  --border: #3b4261;
+
+  /* Foreground */
+  --fg: #c0caf5;
+  --fg-2: #a9b1d6;
+  --fg-muted: #565f89;
+  --fg-disabled: #414868;
+
+  /* Accent — Tokyo Night signature blue */
+  --accent: #7aa2f7;
+  --accent-hover: #2ac3de;
+  --accent-solid: #7aa2f7;
+  --accent-solid-hover: #b4f9f8;
+  --accent-soft: rgba(122, 162, 247, 0.12);
+  --accent-border: rgba(122, 162, 247, 0.32);
+  --accent-focus: #7dcfff;
+  --accent-on: #1a1b26;
+
+  --link: #7dcfff;
+  --link-hover: #b4f9f8;
+
+  /* OKR palette */
+  --okr-1: #ff9e64;
+  --okr-1-soft: rgba(255, 158, 100, 0.12);
+  --okr-1-border: rgba(255, 158, 100, 0.32);
+  --okr-1-ink: #ff9e64;
+
+  --okr-2: #9ece6a;
+  --okr-2-soft: rgba(158, 206, 106, 0.12);
+  --okr-2-border: rgba(158, 206, 106, 0.32);
+  --okr-2-ink: #9ece6a;
+
+  --okr-3: #7aa2f7;
+  --okr-3-soft: rgba(122, 162, 247, 0.12);
+  --okr-3-border: rgba(122, 162, 247, 0.32);
+  --okr-3-ink: #7aa2f7;
+
+  --okr-4: #bb9af7;
+  --okr-4-soft: rgba(187, 154, 247, 0.12);
+  --okr-4-border: rgba(187, 154, 247, 0.32);
+  --okr-4-ink: #bb9af7;
+
+  /* Chart palette */
+  --chart-1: #7aa2f7;
+  --chart-2: #9ece6a;
+  --chart-3: #ff9e64;
+  --chart-4: #bb9af7;
+  --chart-5: #7dcfff;
+  --chart-6: #f7768e;
+  --chart-grid: #3b4261;
+  --chart-axis: #565f89;
+
+  /* Label palette */
+  --label-green: #9ece6a;
+  --label-yellow: #e0af68;
+  --label-orange: #ff9e64;
+  --label-red: #f7768e;
+  --label-purple: #bb9af7;
+  --label-blue: #7aa2f7;
+  --label-sky: #7dcfff;
+  --label-lime: #b9f27c;
+  --label-pink: #ff9ee0;
+  --label-black: #c0caf5;
+  --label-gray: #565f89;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.5);
+}

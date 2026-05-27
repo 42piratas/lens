@@ -1,0 +1,31 @@
+/* AUTO-GENERATED — do not edit. Run `pnpm gen:registries` to regenerate. */
+/*
+   Source of truth: each `app/themes/<id>/tokens.css`.
+   To add a theme: copy `_template/`, edit tokens.css, run `pnpm gen:registries`.
+*/
+@import "./ayu-light/tokens.css";
+@import "./catppuccin-latte/tokens.css";
+@import "./catppuccin-mocha/tokens.css";
+@import "./dark/tokens.css";
+@import "./dark-paper/tokens.css";
+@import "./dracula/tokens.css";
+@import "./dracula-paper/tokens.css";
+@import "./github-light/tokens.css";
+@import "./gruvbox-dark/tokens.css";
+@import "./gruvbox-light/tokens.css";
+@import "./light/tokens.css";
+@import "./monokai/tokens.css";
+@import "./monokai-light/tokens.css";
+@import "./monokai-paper/tokens.css";
+@import "./nord/tokens.css";
+@import "./nord-paper/tokens.css";
+@import "./one-dark-pro/tokens.css";
+@import "./one-light/tokens.css";
+@import "./rose-pine/tokens.css";
+@import "./rose-pine-dawn/tokens.css";
+@import "./rose-pine-paper/tokens.css";
+@import "./solarized-dark/tokens.css";
+@import "./solarized-dark-paper/tokens.css";
+@import "./solarized-light/tokens.css";
+@import "./tokyo-night/tokens.css";
+@import "./tokyo-night-day/tokens.css";

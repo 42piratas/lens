@@ -1,0 +1,79 @@
+/* ============================================================
+   Rosé Pine Dawn — mirrored from rosepinetheme/palette (Dawn variant).
+   Source: https://rosepinetheme.com
+   ============================================================ */
+[data-theme="rose-pine-dawn"] {
+  /* Surface */
+  --surface: #faf4ed;       /* base */
+  --surface-alt: #fffaf3;   /* surface */
+  --surface-muted: #f2e9e1; /* overlay */
+  --surface-raised: #ffffff;
+  --border: #dfdad9;
+
+  /* Foreground */
+  --fg: #575279;          /* text */
+  --fg-2: #797593;        /* subtle */
+  --fg-muted: #9893a5;    /* muted */
+  --fg-disabled: #cecacd; /* highlight-high */
+
+  /* Accent — Iris (purple) */
+  --accent: #907aa9;
+  --accent-hover: #b4637a;
+  --accent-solid: #907aa9;
+  --accent-solid-hover: #b4637a;
+  --accent-soft: rgba(144, 122, 169, 0.12);
+  --accent-border: rgba(144, 122, 169, 0.32);
+  --accent-focus: #907aa9;
+  --accent-on: #faf4ed;
+
+  --link: #286983;
+  --link-hover: #56949f;
+
+  /* OKR palette */
+  --okr-1: #ea9d34; /* gold */
+  --okr-1-soft: rgba(234, 157, 52, 0.12);
+  --okr-1-border: rgba(234, 157, 52, 0.32);
+  --okr-1-ink: #ea9d34;
+
+  --okr-2: #56949f; /* foam */
+  --okr-2-soft: rgba(86, 148, 159, 0.12);
+  --okr-2-border: rgba(86, 148, 159, 0.32);
+  --okr-2-ink: #56949f;
+
+  --okr-3: #286983; /* pine */
+  --okr-3-soft: rgba(40, 105, 131, 0.12);
+  --okr-3-border: rgba(40, 105, 131, 0.32);
+  --okr-3-ink: #286983;
+
+  --okr-4: #907aa9; /* iris */
+  --okr-4-soft: rgba(144, 122, 169, 0.12);
+  --okr-4-border: rgba(144, 122, 169, 0.32);
+  --okr-4-ink: #907aa9;
+
+  /* Chart palette */
+  --chart-1: #907aa9;
+  --chart-2: #56949f;
+  --chart-3: #ea9d34;
+  --chart-4: #286983;
+  --chart-5: #d7827e;
+  --chart-6: #b4637a;
+  --chart-grid: #dfdad9;
+  --chart-axis: #797593;
+
+  /* Label palette — Rosé Pine ships no green; community convention
+     maps green → foam (teal). Pine is too dark/blue at chip size. */
+  --label-green: #56949f; /* foam */
+  --label-yellow: #ea9d34;
+  --label-orange: #d7827e;
+  --label-red: #b4637a;
+  --label-purple: #907aa9;
+  --label-blue: #286983;
+  --label-sky: #56949f;
+  --label-lime: #56949f;
+  --label-pink: #d7827e;
+  --label-black: #575279;
+  --label-gray: #797593;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.08);
+}

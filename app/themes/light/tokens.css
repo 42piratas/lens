@@ -1,0 +1,83 @@
+/* ============================================================
+   Light theme — 42labs design system default.
+   The inline FOUC bootstrap (`THEME_BOOTSTRAP_SCRIPT`) always sets
+   `data-theme` on <html> before paint, so we never need a `:root`
+   fallback here — and using one would clobber any theme whose
+   tokens.css is imported earlier in the `themes/index.css` cascade
+   (themes are imported alphabetically; equal-specificity later wins).
+   ============================================================ */
+[data-theme="light"] {
+  /* Surface */
+  --surface: var(--canvas-cool);
+  --surface-alt: var(--canvas-warm);
+  --surface-muted: var(--cream);
+  --surface-raised: var(--canvas-cool);
+  --border: var(--linen);
+
+  /* Foreground */
+  --fg: var(--charcoal);
+  --fg-2: var(--graphite);
+  --fg-muted: var(--stone);
+  --fg-disabled: var(--mid-stone);
+
+  /* Accent (copper) */
+  --accent: var(--copper);
+  --accent-hover: var(--copper-dark);
+  --accent-solid: var(--copper-ink);
+  --accent-solid-hover: var(--copper-ink-dark);
+  --accent-soft: var(--copper-soft);
+  --accent-border: var(--copper-border);
+  --accent-focus: var(--copper-focus);
+  --accent-on: #ffffff;
+
+  --link: var(--blue-dark);
+  --link-hover: var(--blue);
+
+  /* OKR palette — copper, emerald, blue, violet (per context.md) */
+  --okr-1: var(--copper);
+  --okr-1-soft: var(--copper-soft);
+  --okr-1-border: var(--copper-border);
+  --okr-1-ink: var(--copper-ink);
+
+  --okr-2: var(--emerald);
+  --okr-2-soft: #dcfce7;
+  --okr-2-border: #bbf7d0;
+  --okr-2-ink: var(--emerald-dark);
+
+  --okr-3: var(--blue);
+  --okr-3-soft: var(--sky);
+  --okr-3-border: var(--blue-border);
+  --okr-3-ink: var(--blue-dark);
+
+  --okr-4: var(--violet);
+  --okr-4-soft: #ede9fe;
+  --okr-4-border: #ddd6fe;
+  --okr-4-ink: var(--violet-dark);
+
+  /* Chart palette — categorical series colors */
+  --chart-1: var(--okr-1);
+  --chart-2: var(--okr-2);
+  --chart-3: var(--okr-3);
+  --chart-4: var(--okr-4);
+  --chart-5: var(--blue-dark);
+  --chart-6: var(--copper-ink);
+  --chart-grid: var(--border);
+  --chart-axis: var(--fg-muted);
+
+  /* Label palette — Trello / Keep / generic chip colors. Themes remap.
+     Each token is a single semantic hue ready for chip text + bg. */
+  --label-green: var(--emerald);
+  --label-yellow: var(--amber);
+  --label-orange: var(--copper);
+  --label-red: var(--red);
+  --label-purple: var(--violet);
+  --label-blue: var(--blue);
+  --label-sky: #0ea5e9;
+  --label-lime: #84cc16;
+  --label-pink: #ec4899;
+  --label-black: var(--fg-2);
+  --label-gray: var(--fg-muted);
+
+  /* Shadow tokens — depth that needs to invert on dark surfaces. */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.08);
+}

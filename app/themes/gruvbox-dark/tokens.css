@@ -1,0 +1,78 @@
+/* ============================================================
+   Gruvbox Dark — mirrored from morhetz/gruvbox (Dark Medium).
+   Source: https://github.com/morhetz/gruvbox
+   ============================================================ */
+[data-theme="gruvbox-dark"] {
+  /* Surface */
+  --surface: #282828;       /* bg0 */
+  --surface-alt: #1d2021;   /* bg0_h */
+  --surface-muted: #3c3836; /* bg1 */
+  --surface-raised: #504945; /* bg2 */
+  --border: #3c3836;
+
+  /* Foreground */
+  --fg: #ebdbb2;          /* fg1 */
+  --fg-2: #d5c4a1;        /* fg2 */
+  --fg-muted: #a89984;    /* fg4 */
+  --fg-disabled: #928374; /* gray */
+
+  /* Accent — Yellow-bright */
+  --accent: #fabd2f;
+  --accent-hover: #fe8019;
+  --accent-solid: #fabd2f;
+  --accent-solid-hover: #fe8019;
+  --accent-soft: rgba(250, 189, 47, 0.12);
+  --accent-border: rgba(250, 189, 47, 0.32);
+  --accent-focus: #fabd2f;
+  --accent-on: #282828;
+
+  --link: #83a598;
+  --link-hover: #8ec07c;
+
+  /* OKR palette */
+  --okr-1: #fe8019; /* orange */
+  --okr-1-soft: rgba(254, 128, 25, 0.12);
+  --okr-1-border: rgba(254, 128, 25, 0.32);
+  --okr-1-ink: #fe8019;
+
+  --okr-2: #b8bb26; /* green */
+  --okr-2-soft: rgba(184, 187, 38, 0.12);
+  --okr-2-border: rgba(184, 187, 38, 0.32);
+  --okr-2-ink: #b8bb26;
+
+  --okr-3: #83a598; /* blue */
+  --okr-3-soft: rgba(131, 165, 152, 0.14);
+  --okr-3-border: rgba(131, 165, 152, 0.32);
+  --okr-3-ink: #83a598;
+
+  --okr-4: #d3869b; /* purple */
+  --okr-4-soft: rgba(211, 134, 155, 0.12);
+  --okr-4-border: rgba(211, 134, 155, 0.32);
+  --okr-4-ink: #d3869b;
+
+  /* Chart palette */
+  --chart-1: #fabd2f;
+  --chart-2: #b8bb26;
+  --chart-3: #fe8019;
+  --chart-4: #d3869b;
+  --chart-5: #83a598;
+  --chart-6: #fb4934;
+  --chart-grid: #3c3836;
+  --chart-axis: #a89984;
+
+  /* Label palette */
+  --label-green: #b8bb26;
+  --label-yellow: #fabd2f;
+  --label-orange: #fe8019;
+  --label-red: #fb4934;
+  --label-purple: #d3869b;
+  --label-blue: #83a598;
+  --label-sky: #8ec07c;
+  --label-lime: #b8bb26;
+  --label-pink: #d3869b;
+  --label-black: #ebdbb2;
+  --label-gray: #a89984;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.5);
+}

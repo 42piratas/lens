@@ -1,0 +1,109 @@
+/* ============================================================
+   Nord Paper — paper-on-dark variant of Nord.
+
+   Tokens ONLY — no rules. The shared `_paper-pattern.css` provides
+   all the chrome-cascade / multi-card-body / header-text / sidebar-icon /
+   media-merge structural rules; it fires because the manifest declares
+   `mode: "dark-paper"` (bootstrap sets data-theme-mode accordingly).
+
+   Nord ships both halves of its palette natively (Polar Night for dark
+   surfaces, Snow Storm for light), so the paper layer pulls directly
+   from Snow Storm (nord4..nord6) — strictly canonical Nord.
+
+   Visual layering:
+     canvas    = #2e3440 (nord0)  — deepest dark
+     sidebar   = #3b4252 (nord1)  — slightly raised dark
+     header    = #434c5e (nord2)  — dark strip on each card
+     body      = #eceff4 (nord6)  — primary paper
+     muted bg  = #e5e9f0 (nord5)  — multi-card tile body
+   ============================================================ */
+[data-theme="nord-paper"] {
+  /* ----- Base tokens (dark stage — canvas + sidebar + tile header) ----- */
+
+  /* Surface — Polar Night */
+  --surface: #2e3440;        /* nord0 */
+  --surface-alt: #3b4252;    /* nord1 */
+  --surface-muted: #434c5e;  /* nord2 — dark header strip */
+  --surface-raised: #4c566a; /* nord3 */
+  --border: #434c5e;
+
+  /* Foreground — Snow Storm */
+  --fg: #eceff4;        /* nord6 */
+  --fg-2: #e5e9f0;      /* nord5 */
+  --fg-muted: #d8dee9;  /* nord4 */
+  --fg-disabled: #4c566a;
+
+  /* Accent — Frost (mid-tone cyan; reads on both dark + paper) */
+  --accent: #88c0d0;        /* nord8 */
+  --accent-hover: #8fbcbb;  /* nord7 */
+  --accent-solid: #88c0d0;
+  --accent-solid-hover: #8fbcbb;
+  --accent-soft: rgba(136, 192, 208, 0.12);
+  --accent-border: rgba(136, 192, 208, 0.32);
+  --accent-focus: #88c0d0;
+  --accent-on: #2e3440;
+
+  --link: #81a1c1;
+  --link-hover: #88c0d0;
+
+  /* OKR palette — Aurora */
+  --okr-1: #d08770; /* nord12 orange */
+  --okr-1-soft: rgba(208, 135, 112, 0.12);
+  --okr-1-border: rgba(208, 135, 112, 0.32);
+  --okr-1-ink: #d08770;
+
+  --okr-2: #a3be8c; /* nord14 green */
+  --okr-2-soft: rgba(163, 190, 140, 0.12);
+  --okr-2-border: rgba(163, 190, 140, 0.32);
+  --okr-2-ink: #a3be8c;
+
+  --okr-3: #5e81ac; /* nord10 blue */
+  --okr-3-soft: rgba(94, 129, 172, 0.12);
+  --okr-3-border: rgba(94, 129, 172, 0.32);
+  --okr-3-ink: #81a1c1;
+
+  --okr-4: #b48ead; /* nord15 purple */
+  --okr-4-soft: rgba(180, 142, 173, 0.12);
+  --okr-4-border: rgba(180, 142, 173, 0.32);
+  --okr-4-ink: #b48ead;
+
+  /* Chart palette */
+  --chart-1: #88c0d0;
+  --chart-2: #a3be8c;
+  --chart-3: #d08770;
+  --chart-4: #b48ead;
+  --chart-5: #81a1c1;
+  --chart-6: #ebcb8b;
+  --chart-grid: #434c5e;
+  --chart-axis: #d8dee9;
+
+  /* Label palette */
+  --label-green: #a3be8c;
+  --label-yellow: #ebcb8b;
+  --label-orange: #d08770;
+  --label-red: #bf616a;
+  --label-purple: #b48ead;
+  --label-blue: #5e81ac;
+  --label-sky: #88c0d0;
+  --label-lime: #a3be8c;
+  --label-pink: #b48ead;
+  --label-black: #eceff4;
+  --label-gray: #d8dee9;
+
+  /* Shadow — heavier on the dark canvas (used by elements outside cards). */
+  --shadow-card: 0 6px 16px -6px rgb(0 0 0 / 0.55), 0 2px 4px -2px rgb(0 0 0 / 0.35);
+
+  /* ----- Paper-layer tokens (consumed by _paper-pattern.css) ----- */
+
+  --paper-surface: #eceff4;        /* nord6 — primary paper */
+  --paper-surface-muted: #e5e9f0;  /* nord5 — multi-card tile body */
+  --paper-fg: #2e3440;             /* nord0 — Polar Night used as ink */
+  --paper-fg-2: #3b4252;           /* nord1 — secondary text on paper */
+  --paper-fg-muted: #4c566a;       /* nord3 — muted text on paper */
+  --paper-border: #d8dee9;         /* nord4 — border on paper */
+  --paper-shadow: 0 2px 6px -2px rgb(0 0 0 / 0.18), 0 1px 2px -1px rgb(0 0 0 / 0.12);
+  --paper-accent-on: #2e3440;      /* nord0 — dark text on Frost accent inside paper */
+
+  --header-fg: #eceff4;            /* nord6 — light text on dark header strip */
+  --sidebar-icon: #eceff4;
+}

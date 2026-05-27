@@ -1,0 +1,111 @@
+/* ============================================================
+   Rosé Pine Paper — paper-on-dark variant of Rosé Pine.
+
+   Tokens ONLY — no rules. The shared `_paper-pattern.css` provides
+   all the chrome-cascade / multi-card-body / header-text / sidebar-icon /
+   media-merge structural rules; it fires because the manifest declares
+   `mode: "dark-paper"` (bootstrap sets data-theme-mode accordingly).
+
+   Rosé Pine ships a canonical light variant (Dawn), so the paper layer
+   pulls verbatim from Dawn (base / overlay / text / subtle / muted /
+   border) — strictly inside the Rosé Pine canonical palette.
+
+   Visual layering:
+     canvas    = #191724 (Main base)     — deepest dark
+     sidebar   = #1f1d2e (Main surface)  — slightly raised dark
+     header    = #26233a (Main overlay)  — dark strip on each card
+     body      = #faf4ed (Dawn base)     — primary paper
+     muted bg  = #f2e9e1 (Dawn overlay)  — multi-card tile body
+   ============================================================ */
+[data-theme="rose-pine-paper"] {
+  /* ----- Base tokens (dark stage — canvas + sidebar + tile header) ----- */
+
+  /* Surface — Rosé Pine Main */
+  --surface: #191724;        /* base */
+  --surface-alt: #1f1d2e;    /* surface */
+  --surface-muted: #26233a;  /* overlay — dark header strip */
+  --surface-raised: #403d52; /* highlight-med */
+  --border: #26233a;
+
+  /* Foreground — Rosé Pine Main */
+  --fg: #e0def4;           /* text */
+  --fg-2: #908caa;         /* subtle */
+  --fg-muted: #6e6a86;     /* muted */
+  --fg-disabled: #524f67;  /* highlight-high */
+
+  /* Accent — Iris (Main pastel — shared across dark + paper contexts;
+     reads as a soft pastel on Dawn paper which fits Rosé Pine's aesthetic). */
+  --accent: #c4a7e7;
+  --accent-hover: #ebbcba;
+  --accent-solid: #c4a7e7;
+  --accent-solid-hover: #ebbcba;
+  --accent-soft: rgba(196, 167, 231, 0.12);
+  --accent-border: rgba(196, 167, 231, 0.32);
+  --accent-focus: #c4a7e7;
+  --accent-on: #191724;
+
+  --link: #9ccfd8;
+  --link-hover: #ebbcba;
+
+  /* OKR palette — Rosé Pine Main accents (shared across dark + paper). */
+  --okr-1: #f6c177; /* gold */
+  --okr-1-soft: rgba(246, 193, 119, 0.12);
+  --okr-1-border: rgba(246, 193, 119, 0.32);
+  --okr-1-ink: #f6c177;
+
+  --okr-2: #9ccfd8; /* foam */
+  --okr-2-soft: rgba(156, 207, 216, 0.12);
+  --okr-2-border: rgba(156, 207, 216, 0.32);
+  --okr-2-ink: #9ccfd8;
+
+  --okr-3: #31748f; /* pine */
+  --okr-3-soft: rgba(49, 116, 143, 0.16);
+  --okr-3-border: rgba(49, 116, 143, 0.36);
+  --okr-3-ink: #9ccfd8;
+
+  --okr-4: #c4a7e7; /* iris */
+  --okr-4-soft: rgba(196, 167, 231, 0.12);
+  --okr-4-border: rgba(196, 167, 231, 0.32);
+  --okr-4-ink: #c4a7e7;
+
+  /* Chart palette */
+  --chart-1: #c4a7e7;
+  --chart-2: #9ccfd8;
+  --chart-3: #f6c177;
+  --chart-4: #ebbcba;
+  --chart-5: #31748f;
+  --chart-6: #eb6f92;
+  --chart-grid: #26233a;
+  --chart-axis: #908caa;
+
+  /* Label palette — Rosé Pine ships no green; community convention
+     maps green → foam (cyan). Pine is too dark/blue at chip size. */
+  --label-green: #9ccfd8; /* foam */
+  --label-yellow: #f6c177;
+  --label-orange: #ebbcba;
+  --label-red: #eb6f92;
+  --label-purple: #c4a7e7;
+  --label-blue: #31748f;
+  --label-sky: #9ccfd8;
+  --label-lime: #9ccfd8;
+  --label-pink: #ebbcba;
+  --label-black: #e0def4;
+  --label-gray: #908caa;
+
+  /* Shadow — heavier on the dark canvas (used by elements outside cards). */
+  --shadow-card: 0 6px 16px -6px rgb(0 0 0 / 0.55), 0 2px 4px -2px rgb(0 0 0 / 0.35);
+
+  /* ----- Paper-layer tokens (consumed by _paper-pattern.css) ----- */
+
+  --paper-surface: #faf4ed;        /* Dawn base — primary paper */
+  --paper-surface-muted: #f2e9e1;  /* Dawn overlay — multi-card tile body */
+  --paper-fg: #575279;             /* Dawn text — dusty purple ink */
+  --paper-fg-2: #797593;           /* Dawn subtle — secondary text on paper */
+  --paper-fg-muted: #9893a5;       /* Dawn muted — muted text on paper */
+  --paper-border: #dfdad9;         /* Dawn border on paper */
+  --paper-shadow: 0 2px 6px -2px rgb(0 0 0 / 0.18), 0 1px 2px -1px rgb(0 0 0 / 0.12);
+  --paper-accent-on: #191724;      /* Main base — dark text on pastel iris inside paper card */
+
+  --header-fg: #e0def4;            /* Main text — light on dark header strip */
+  --sidebar-icon: #e0def4;
+}

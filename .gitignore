@@ -1,0 +1,33 @@
+# Node
+node_modules/
+.npm/
+
+# Next.js
+.next/
+out/
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Build artifacts
+build/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+.screenshots/
+
+# Worktrees live external to the repo (canon: ~/<workspace>/worktrees/).
+# Guard against any internal .worktrees/ being created accidentally.
+.worktrees/

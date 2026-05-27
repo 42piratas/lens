@@ -1,0 +1,79 @@
+/* ============================================================
+   Theme template — copy and rename the selector to `[data-theme="<id>"]`.
+   Every token below is required; missing ones fall through to whatever
+   `:root` (Light) defines, which usually looks broken in dark surfaces.
+   ============================================================ */
+[data-theme="_template"] {
+  /* Surface */
+  --surface: #000000;
+  --surface-alt: #0a0a0a;
+  --surface-muted: #141414;
+  --surface-raised: #1a1a1a;
+  --border: #262626;
+
+  /* Foreground */
+  --fg: #f5f5f5;
+  --fg-2: #d4d4d4;
+  --fg-muted: #737373;
+  --fg-disabled: #525252;
+
+  /* Accent */
+  --accent: #ff00ff;
+  --accent-hover: #cc00cc;
+  --accent-solid: #ff00ff;
+  --accent-solid-hover: #cc00cc;
+  --accent-soft: rgba(255, 0, 255, 0.12);
+  --accent-border: rgba(255, 0, 255, 0.32);
+  --accent-focus: #ff00ff;
+  --accent-on: #000000;
+
+  --link: #00ffff;
+  --link-hover: #80ffff;
+
+  /* OKR palette */
+  --okr-1: #ff8800;
+  --okr-1-soft: rgba(255, 136, 0, 0.12);
+  --okr-1-border: rgba(255, 136, 0, 0.32);
+  --okr-1-ink: #ff8800;
+
+  --okr-2: #00ff88;
+  --okr-2-soft: rgba(0, 255, 136, 0.12);
+  --okr-2-border: rgba(0, 255, 136, 0.32);
+  --okr-2-ink: #00ff88;
+
+  --okr-3: #0088ff;
+  --okr-3-soft: rgba(0, 136, 255, 0.12);
+  --okr-3-border: rgba(0, 136, 255, 0.32);
+  --okr-3-ink: #0088ff;
+
+  --okr-4: #8800ff;
+  --okr-4-soft: rgba(136, 0, 255, 0.12);
+  --okr-4-border: rgba(136, 0, 255, 0.32);
+  --okr-4-ink: #8800ff;
+
+  /* Chart palette */
+  --chart-1: #ff8800;
+  --chart-2: #00ff88;
+  --chart-3: #0088ff;
+  --chart-4: #8800ff;
+  --chart-5: #00ffff;
+  --chart-6: #ff0088;
+  --chart-grid: #262626;
+  --chart-axis: #737373;
+
+  /* Label palette */
+  --label-green: #00ff88;
+  --label-yellow: #ffff00;
+  --label-orange: #ff8800;
+  --label-red: #ff0000;
+  --label-purple: #8800ff;
+  --label-blue: #0088ff;
+  --label-sky: #00ffff;
+  --label-lime: #88ff00;
+  --label-pink: #ff0088;
+  --label-black: #f5f5f5;
+  --label-gray: #737373;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.5);
+}

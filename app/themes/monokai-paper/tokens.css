@@ -1,0 +1,112 @@
+/* ============================================================
+   Monokai Paper — paper-on-dark variant of Monokai.
+
+   Tokens ONLY — no rules. The shared `_paper-pattern.css` provides
+   all the chrome-cascade / multi-card-body / header-text / sidebar-icon /
+   media-merge structural rules; it fires because the manifest declares
+   `mode: "dark-paper"` (bootstrap sets data-theme-mode accordingly).
+
+   Monokai ships a community Light variant; the paper layer pulls
+   from Monokai Light (warm off-white surface + earthy paper border)
+   with the canonical Monokai bg (#272822) as ink — keeps the warm
+   Monokai personality on the paper side.
+
+   Visual layering:
+     canvas    = #272822 (canonical bg)        — deepest dark
+     sidebar   = #1e1f1c (canonical surface-alt) — slightly raised dark
+     header    = #3e3d32 (selection)           — dark strip on each card
+     body      = #fafafa (Monokai Light base)  — warm off-white paper
+     muted bg  = #f0eee6 (Monokai Light surface-alt) — multi-card body
+   ============================================================ */
+[data-theme="monokai-paper"] {
+  /* ----- Base tokens (dark stage — canvas + sidebar + tile header) ----- */
+
+  /* Surface — canonical Monokai */
+  --surface: #272822;        /* canonical background */
+  --surface-alt: #1e1f1c;
+  --surface-muted: #3e3d32;  /* selection / line highlight — dark header strip */
+  --surface-raised: #34352f;
+  --border: #49483e;
+
+  /* Foreground — canonical Monokai */
+  --fg: #f8f8f2;             /* canonical foreground */
+  --fg-2: #cfcfc2;
+  --fg-muted: #75715e;       /* canonical comment — readable on both contexts */
+  --fg-disabled: #49483e;
+
+  /* Accent — Pink (canonical Monokai keyword/operator).
+     Hover transitions to canonical purple #ae81ff — the pink↔purple
+     pairing is a Monokai signature (keyword → constant). */
+  --accent: #f92672;
+  --accent-hover: #ae81ff;
+  --accent-solid: #f92672;
+  --accent-solid-hover: #ae81ff;
+  --accent-soft: rgba(249, 38, 114, 0.14);
+  --accent-border: rgba(249, 38, 114, 0.34);
+  --accent-focus: #f92672;
+  --accent-on: #272822;
+
+  --link: #66d9ef;           /* cyan */
+  --link-hover: #a6e22e;     /* green */
+
+  /* OKR palette */
+  --okr-1: #fd971f;          /* orange */
+  --okr-1-soft: rgba(253, 151, 31, 0.14);
+  --okr-1-border: rgba(253, 151, 31, 0.34);
+  --okr-1-ink: #fd971f;
+
+  --okr-2: #a6e22e;          /* green */
+  --okr-2-soft: rgba(166, 226, 46, 0.14);
+  --okr-2-border: rgba(166, 226, 46, 0.34);
+  --okr-2-ink: #a6e22e;
+
+  --okr-3: #66d9ef;          /* cyan */
+  --okr-3-soft: rgba(102, 217, 239, 0.14);
+  --okr-3-border: rgba(102, 217, 239, 0.34);
+  --okr-3-ink: #66d9ef;
+
+  --okr-4: #ae81ff;          /* purple */
+  --okr-4-soft: rgba(174, 129, 255, 0.14);
+  --okr-4-border: rgba(174, 129, 255, 0.34);
+  --okr-4-ink: #ae81ff;
+
+  /* Chart palette */
+  --chart-1: #f92672;
+  --chart-2: #a6e22e;
+  --chart-3: #fd971f;
+  --chart-4: #66d9ef;
+  --chart-5: #ae81ff;
+  --chart-6: #e6db74;
+  --chart-grid: #49483e;
+  --chart-axis: #75715e;
+
+  /* Label palette */
+  --label-green: #a6e22e;
+  --label-yellow: #e6db74;
+  --label-orange: #fd971f;
+  --label-red: #f92672;
+  --label-purple: #ae81ff;
+  --label-blue: #66d9ef;
+  --label-sky: #66d9ef;
+  --label-lime: #a6e22e;
+  --label-pink: #f92672;
+  --label-black: #f8f8f2;
+  --label-gray: #75715e;
+
+  /* Shadow — heavier on the dark canvas (used by elements outside cards). */
+  --shadow-card: 0 6px 16px -6px rgb(0 0 0 / 0.55), 0 2px 4px -2px rgb(0 0 0 / 0.35);
+
+  /* ----- Paper-layer tokens (consumed by _paper-pattern.css) ----- */
+
+  --paper-surface: #fafafa;        /* Monokai Light base — warm off-white paper */
+  --paper-surface-muted: #f0eee6;  /* Monokai Light surface-alt — multi-card body */
+  --paper-fg: #272822;             /* canonical Monokai bg used as ink */
+  --paper-fg-2: #3e3d32;           /* Monokai Light fg-2 — secondary text on paper */
+  --paper-fg-muted: #75715e;       /* canonical Monokai comment — muted text on paper */
+  --paper-border: #d6d3c4;         /* Monokai Light border */
+  --paper-shadow: 0 2px 6px -2px rgb(39 40 34 / 0.16), 0 1px 2px -1px rgb(39 40 34 / 0.10);
+  --paper-accent-on: #272822;      /* canonical Monokai bg — dark text on pink accent inside paper */
+
+  --header-fg: #f8f8f2;            /* canonical Monokai fg — light on dark header strip */
+  --sidebar-icon: #f8f8f2;
+}

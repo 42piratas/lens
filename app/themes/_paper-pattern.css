@@ -1,0 +1,128 @@
+/* ============================================================
+   Paper-on-dark pattern — shared rules for every theme that
+   declares `mode: "dark-paper"` in its manifest.
+
+   The bootstrap script writes `data-theme-mode="dark-paper"` on
+   <html> when such a theme is active; these rules target that
+   attribute. Theme tokens.css declares ONLY tokens (base set +
+   paper-layer set) — never the rules below.
+
+   Required paper-layer tokens (enforced by tokens-coverage test):
+     --paper-surface         primary paper bg (cards, single-content tile bodies)
+     --paper-surface-muted   slightly darker paper (multi-card tile bodies)
+     --paper-fg              primary text on paper
+     --paper-fg-2            secondary text on paper
+     --paper-fg-muted        muted text on paper
+     --paper-border          border on paper elements
+     --paper-shadow          drop-shadow for inner cards on muted body
+     --paper-accent-on       text-on-accent inside paper cards
+     --header-fg             light text on dark tile header strip + macro day labels
+     --sidebar-icon          sidebar icon color (typically same as --header-fg)
+
+   How the cascade works:
+   - Outer chrome (canvas, sidebar, tile header strip) reads from the
+     theme's NATIVE dark tokens (--surface, --surface-alt, --fg, etc.)
+     declared at the [data-theme="<id>"] root block.
+   - The .lens-card-chrome rule below re-declares the surface + fg
+     families inside cards to the paper-layer tokens. Because CSS custom
+     properties cascade per element, any descendant using var(--surface),
+     var(--fg), var(--border) etc. inside a card resolves to paper;
+     outside cards, it resolves to the dark values.
+   - Accent / OKR / chart / label palettes are NOT re-declared inside
+     cards — they're shared across both contexts (selective-contrast
+     palettes like Solarized are designed for this; for others, pick
+     accents that read on both ends).
+   ============================================================ */
+
+/* --- Paper "cards": flip surfaces + foregrounds to paper layer ---
+   Applies to every .lens-card-chrome (dashboard tile shells AND settings
+   sections, which use the same chrome class via the SettingsSection
+   wrapper). The cascade flips surface + fg tokens inside the chrome so
+   descendants read paper values automatically. */
+[data-theme-mode="dark-paper"] .lens-card-chrome {
+  --surface: var(--paper-surface);
+  --surface-alt: var(--paper-surface-muted);
+  /* --surface-muted intentionally inherits from root — tile header strip
+     stays dark, so the topbar's `background: var(--surface-muted)` rule
+     resolves to the theme's dark header tone. */
+  --surface-raised: var(--paper-surface);
+  --border: var(--paper-border);
+  --fg: var(--paper-fg);
+  --fg-2: var(--paper-fg-2);
+  --fg-muted: var(--paper-fg-muted);
+  --fg-disabled: var(--paper-fg-muted);
+  --shadow-card: var(--paper-shadow);
+  --accent-on: var(--paper-accent-on);
+  /* Outer border matches the dark header tone so cards read as
+     dark-matted paper against the canvas (no paper-colored ring). */
+  border-color: var(--surface-muted);
+}
+
+/* --- Multi-card chrome bodies: drop to muted paper so inner cards lift ---
+   Two triggers: dashboard tiles selected by data-tile, and any chrome
+   marked data-multi="true" (Settings — Connections / Workspaces). */
+[data-theme-mode="dark-paper"] .lens-card-chrome[data-tile="kanban-board"] .lens-card-body,
+[data-theme-mode="dark-paper"] .lens-card-chrome[data-tile="media-list"] .lens-card-body,
+[data-theme-mode="dark-paper"] .lens-card-chrome[data-tile="task-list"] .lens-card-body,
+[data-theme-mode="dark-paper"] .lens-card-chrome[data-tile="task-list"] .lens-card-surface,
+[data-theme-mode="dark-paper"] .lens-card-chrome[data-tile="note-buffer"] .lens-card-body,
+[data-theme-mode="dark-paper"] .lens-card-chrome[data-multi="true"] .lens-card-body {
+  background: var(--paper-surface-muted);
+}
+
+/* --- Inner-row cards: primary paper, lifted on the muted paper body ---
+   - .lens-trello-card: Trello kanban + Trello task-list rows
+   - .lens-tasks-item:  Google Tasks to-do rows (default transparent in globals)
+   - .lens-goodreads-{cover,text}-tile: media-list visible "cards"
+     (.lens-goodreads-row itself is a transparent flex container)
+   - .lens-settings-card: Settings inner cards (Connections rows, Workspaces rows) */
+[data-theme-mode="dark-paper"] .lens-trello-card,
+[data-theme-mode="dark-paper"] .lens-tasks-item,
+[data-theme-mode="dark-paper"] .lens-goodreads-cover-tile,
+[data-theme-mode="dark-paper"] .lens-goodreads-text-tile,
+[data-theme-mode="dark-paper"] .lens-settings-card {
+  background: var(--paper-surface);
+}
+
+/* GTasks rows have no default chrome in globals; add it so they read
+   like other paper inner-cards. */
+[data-theme-mode="dark-paper"] .lens-tasks-item {
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+}
+
+/* --- Dark-strip text: tile header labels + macro day strip --- */
+[data-theme-mode="dark-paper"] .lens-card-topbar-label,
+[data-theme-mode="dark-paper"] .lens-cal-macro-topbar-label {
+  color: var(--header-fg);
+}
+
+/* --- Sidebar icons --- */
+[data-theme-mode="dark-paper"] .lens-sidebar-btn,
+[data-theme-mode="dark-paper"] .lens-sidebar-brand {
+  color: var(--sidebar-icon);
+}
+/* Workspace "+" add button has a baked-in opacity 0.7 dim in globals;
+   defeat it so it matches the other sidebar icons in paper themes. */
+[data-theme-mode="dark-paper"] .lens-ws-btn--add {
+  opacity: 1;
+}
+
+/* --- Media-list row: merge cover + text into one continuous card ---
+   In paper themes both sub-tiles share the same bg, so the seam looks
+   like one card. Drop the gap + kill the inner radii + drop the seam
+   border so the merge is seamless. */
+[data-theme-mode="dark-paper"] .lens-goodreads-row {
+  gap: 0;
+}
+[data-theme-mode="dark-paper"] .lens-goodreads-cover-tile {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+}
+[data-theme-mode="dark-paper"] .lens-goodreads-text-tile {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: 0;
+}

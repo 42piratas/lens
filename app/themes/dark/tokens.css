@@ -1,0 +1,77 @@
+/* ============================================================
+   Dark theme — 42labs design system default dark.
+   ============================================================ */
+[data-theme="dark"] {
+  /* Surface */
+  --surface: var(--void);
+  --surface-alt: var(--panel);
+  --surface-muted: var(--panel-alt);
+  --surface-raised: var(--panel-raised);
+  --border: var(--divider);
+
+  /* Foreground */
+  --fg: var(--off-white);
+  --fg-2: #c8ced3;
+  --fg-muted: var(--fog);
+  --fg-disabled: var(--mist);
+
+  /* Accent (mint) */
+  --accent: var(--mint);
+  --accent-hover: var(--mint-hover);
+  --accent-solid: var(--mint);
+  --accent-solid-hover: var(--mint-hover);
+  --accent-soft: var(--mint-soft);
+  --accent-border: var(--mint-border);
+  --accent-focus: var(--mint);
+  --accent-on: var(--void);
+
+  --link: var(--blue-light);
+  --link-hover: #93c5fd;
+
+  /* OKR palette — copper / emerald-light / blue-light / violet-light */
+  --okr-1: var(--copper);
+  --okr-1-soft: rgba(226, 113, 29, 0.12);
+  --okr-1-border: rgba(226, 113, 29, 0.32);
+  --okr-1-ink: #fdba74;
+
+  --okr-2: var(--emerald-light);
+  --okr-2-soft: rgba(52, 211, 153, 0.10);
+  --okr-2-border: rgba(52, 211, 153, 0.28);
+  --okr-2-ink: var(--emerald-light);
+
+  --okr-3: var(--blue-light);
+  --okr-3-soft: rgba(96, 165, 250, 0.10);
+  --okr-3-border: rgba(96, 165, 250, 0.28);
+  --okr-3-ink: var(--blue-light);
+
+  --okr-4: var(--violet-light);
+  --okr-4-soft: rgba(167, 139, 250, 0.12);
+  --okr-4-border: rgba(167, 139, 250, 0.30);
+  --okr-4-ink: var(--violet-light);
+
+  /* Chart palette — defaults inherit from OKR (themes can override). */
+  --chart-1: var(--okr-1);
+  --chart-2: var(--okr-2);
+  --chart-3: var(--okr-3);
+  --chart-4: var(--okr-4);
+  --chart-5: var(--blue-light);
+  --chart-6: #fdba74;
+  --chart-grid: var(--border);
+  --chart-axis: var(--fg-muted);
+
+  /* Label palette — uses dark-friendly variants where they exist. */
+  --label-green: var(--emerald-light);
+  --label-yellow: var(--amber-light);
+  --label-orange: #fdba74;
+  --label-red: var(--red-light);
+  --label-purple: var(--violet-light);
+  --label-blue: var(--blue-light);
+  --label-sky: #7dd3fc;
+  --label-lime: #a3e635;
+  --label-pink: #f9a8d4;
+  --label-black: var(--off-white);
+  --label-gray: var(--fg-muted);
+
+  /* Shadow — heavier on dark to remain perceptible. */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.4);
+}

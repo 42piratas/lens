@@ -1,0 +1,80 @@
+/* ============================================================
+   Monokai Light — light-mode inversion of the canonical Monokai.
+   Surface flips to a warm off-white; classic Monokai accents
+   (pink, green, orange, cyan, purple) are darkened slightly so
+   they meet AA contrast on the light surface.
+   ============================================================ */
+[data-theme="monokai-light"] {
+  /* Surface */
+  --surface: #fafafa;        /* warm off-white */
+  --surface-alt: #f0eee6;
+  --surface-muted: #e8e6dc;
+  --surface-raised: #f4f2ea;
+  --border: #d6d3c4;
+
+  /* Foreground */
+  --fg: #272822;             /* canonical Monokai dark surface used as fg */
+  --fg-2: #3e3d32;
+  --fg-muted: #75715e;       /* canonical comment */
+  --fg-disabled: #a39e8b;
+
+  /* Accent — Pink (canonical Monokai keyword), darkened for AA on light */
+  --accent: #d81e6a;
+  --accent-hover: #b91557;
+  --accent-solid: #d81e6a;
+  --accent-solid-hover: #b91557;
+  --accent-soft: rgba(216, 30, 106, 0.10);
+  --accent-border: rgba(216, 30, 106, 0.30);
+  --accent-focus: #d81e6a;
+  --accent-on: #fafafa;
+
+  --link: #1a91a6;           /* darker cyan */
+  --link-hover: #4f8c1f;     /* darker green */
+
+  /* OKR palette */
+  --okr-1: #c46e0f;          /* darker orange */
+  --okr-1-soft: rgba(196, 110, 15, 0.10);
+  --okr-1-border: rgba(196, 110, 15, 0.30);
+  --okr-1-ink: #c46e0f;
+
+  --okr-2: #4f8c1f;          /* darker green */
+  --okr-2-soft: rgba(79, 140, 31, 0.10);
+  --okr-2-border: rgba(79, 140, 31, 0.30);
+  --okr-2-ink: #4f8c1f;
+
+  --okr-3: #1a91a6;          /* darker cyan */
+  --okr-3-soft: rgba(26, 145, 166, 0.10);
+  --okr-3-border: rgba(26, 145, 166, 0.30);
+  --okr-3-ink: #1a91a6;
+
+  --okr-4: #7e4ed6;          /* darker purple */
+  --okr-4-soft: rgba(126, 78, 214, 0.10);
+  --okr-4-border: rgba(126, 78, 214, 0.30);
+  --okr-4-ink: #7e4ed6;
+
+  /* Chart palette */
+  --chart-1: #d81e6a;
+  --chart-2: #4f8c1f;
+  --chart-3: #c46e0f;
+  --chart-4: #1a91a6;
+  --chart-5: #7e4ed6;
+  --chart-6: #b89a1f;
+  --chart-grid: #e8e6dc;
+  --chart-axis: #75715e;
+
+  /* Label palette */
+  --label-green: #4f8c1f;
+  --label-yellow: #b89a1f;
+  --label-orange: #c46e0f;
+  --label-red: #d81e6a;
+  --label-purple: #7e4ed6;
+  --label-blue: #1a91a6;
+  --label-sky: #1a91a6;
+  --label-lime: #4f8c1f;
+  --label-pink: #d81e6a;
+  --label-black: #272822;
+  --label-gray: #75715e;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(39 40 34 / 0.10);
+}

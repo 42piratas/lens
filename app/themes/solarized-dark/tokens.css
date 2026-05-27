@@ -1,0 +1,78 @@
+/* ============================================================
+   Solarized Dark — mirrored from Ethan Schoonover's Solarized.
+   Source: https://ethanschoonover.com/solarized
+   ============================================================ */
+[data-theme="solarized-dark"] {
+  /* Surface — base03/base02 (canonical 16-color palette only) */
+  --surface: #002b36;       /* base03 */
+  --surface-alt: #073642;   /* base02 */
+  --surface-muted: #073642; /* base02 */
+  --surface-raised: #073642;/* base02 */
+  --border: #073642;        /* base02 */
+
+  /* Foreground — base0/base1 */
+  --fg: #93a1a1;          /* base1 */
+  --fg-2: #839496;        /* base0 */
+  --fg-muted: #657b83;    /* base00 */
+  --fg-disabled: #586e75; /* base01 */
+
+  /* Accent — Solarized blue */
+  --accent: #268bd2;
+  --accent-hover: #2aa198;
+  --accent-solid: #268bd2;
+  --accent-solid-hover: #2aa198;
+  --accent-soft: rgba(38, 139, 210, 0.14);
+  --accent-border: rgba(38, 139, 210, 0.34);
+  --accent-focus: #2aa198;
+  --accent-on: #002b36;
+
+  --link: #2aa198;
+  --link-hover: #93a1a1;
+
+  /* OKR palette — Solarized accents */
+  --okr-1: #cb4b16; /* orange */
+  --okr-1-soft: rgba(203, 75, 22, 0.14);
+  --okr-1-border: rgba(203, 75, 22, 0.34);
+  --okr-1-ink: #cb4b16;
+
+  --okr-2: #859900; /* green */
+  --okr-2-soft: rgba(133, 153, 0, 0.14);
+  --okr-2-border: rgba(133, 153, 0, 0.34);
+  --okr-2-ink: #859900;
+
+  --okr-3: #268bd2; /* blue */
+  --okr-3-soft: rgba(38, 139, 210, 0.14);
+  --okr-3-border: rgba(38, 139, 210, 0.34);
+  --okr-3-ink: #268bd2;
+
+  --okr-4: #6c71c4; /* violet */
+  --okr-4-soft: rgba(108, 113, 196, 0.14);
+  --okr-4-border: rgba(108, 113, 196, 0.34);
+  --okr-4-ink: #6c71c4;
+
+  /* Chart palette */
+  --chart-1: #268bd2;
+  --chart-2: #859900;
+  --chart-3: #cb4b16;
+  --chart-4: #6c71c4;
+  --chart-5: #2aa198;
+  --chart-6: #b58900;
+  --chart-grid: #073642;
+  --chart-axis: #657b83;
+
+  /* Label palette */
+  --label-green: #859900;
+  --label-yellow: #b58900;
+  --label-orange: #cb4b16;
+  --label-red: #dc322f;
+  --label-purple: #6c71c4;
+  --label-blue: #268bd2;
+  --label-sky: #2aa198;
+  --label-lime: #859900;
+  --label-pink: #d33682;
+  --label-black: #93a1a1;
+  --label-gray: #657b83;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.5);
+}

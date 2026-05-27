@@ -1,0 +1,3227 @@
+@import "tailwindcss";
+
+/* Theme registry — every registered theme's tokens.css. Each theme
+   selects on `[data-theme="<id>"]` only (NEVER `:root`) — the inline
+   FOUC bootstrap guarantees `data-theme` is set on <html> before
+   paint, and a `:root` fallback would clobber every theme whose
+   tokens.css is imported earlier in the cascade. */
+@import "../themes/index.css";
+
+/* Paper-on-dark pattern — shared rules applied to any theme with
+   `mode: "dark-paper"` (bootstrap sets `data-theme-mode="dark-paper"`
+   on <html>). Imported AFTER themes/index.css so its `[data-theme-mode]`
+   selectors win on equal-specificity ties via source order. */
+@import "../themes/_paper-pattern.css";
+
+/* =========================================================
+   Tailwind 4 — bind utility-class theme to our CSS vars.
+   Fonts wired here so `font-sans|heading|mono` map to the
+   next/font CSS vars.
+   ========================================================= */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-fg-muted: var(--fg-muted);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+  --font-mono: var(--font-mono);
+
+  /* Type scale — extends Tailwind's defaults with project sizes used by dense card layouts.
+     Sizes scale uniformly via `--font-scale` (default 1; user-tunable in /settings). */
+  --font-scale: 1;
+  --text-xxs: calc(11px * var(--font-scale));
+  --text-tiny: calc(12px * var(--font-scale));
+  --text-xs: calc(13px * var(--font-scale));
+  --text-sm: calc(14px * var(--font-scale));
+  --text-base: calc(15px * var(--font-scale));
+}
+
+/* =========================================================
+   42labs design system — raw tokens (atomic brand values)
+   Source canon: ~/Spaceship/42labs.io/www/design/index.html
+   ========================================================= */
+:root {
+  /* Light palette */
+  --canvas-warm: #FDFAF5;
+  --canvas-cool: #FFFFFF;
+  --cream: #FEF3E2;
+  --muted-cool: #F5F5F4;
+  --linen: #E8E3DD;
+  --border-cool: #E7E5E4;
+  --mid-stone: #B8AFA8;
+  --stone: #756D68;
+  --graphite: #433E3A;
+  --charcoal: #1C1917;
+
+  --copper-soft: #FDECD8;
+  --copper-border: #F5C9A1;
+  --copper-focus: #F59342;
+  --copper: #E2711D;
+  --copper-dark: #CC5D0A;
+  --copper-ink: #B45309;
+  --copper-ink-dark: #92400E;
+
+  --sky: #EFF6FF;
+  --blue-border: #BFDBFE;
+  --blue: #3B82F6;
+  --blue-dark: #2563EB;
+
+  --emerald: #16A34A;
+  --emerald-dark: #166534;
+  --red: #DC2626;
+  --red-dark: #991B1B;
+  --amber: #EAB308;
+  --amber-dark: #854D0E;
+
+  --violet: #8B5CF6;
+  --violet-dark: #6D28D9;
+
+  /* Dark palette — cool-blue ramp + mint accent */
+  --void: #06101A;
+  --panel: #121C26;
+  --panel-alt: #16222D;
+  --panel-raised: #1F2833;
+  --slate-700: #102232;
+  --slate-600: #18283A;
+  --slate-500: #273545;
+  --divider: #2B3540;
+  --mist: #6C7C89;
+  --fog: #949FA8;
+  --steel: #C8CED3;
+  --off-white: #F2F4F5;
+  --mint: #00FFA7;
+  --mint-hover: #09C385;
+  --mint-soft: #051F14;
+  --mint-border: #0E4A34;
+
+  --emerald-light: #34D399;
+  --red-light: #F87171;
+  --amber-light: #FBBF24;
+  --blue-light: #60A5FA;
+  --violet-light: #A78BFA;
+
+  /* Spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+
+  /* Radii */
+  --r-2: 6px;
+  --r-3: 8px;
+  --r-4: 10px;
+  --r-full: 999px;
+}
+
+/* =========================================================
+   Theme-agnostic primitives — same across every registered theme.
+   Per-theme semantic tokens (surface / fg / accent / okr / chart /
+   label / shadow) live in `app/themes/<id>/tokens.css`.
+   ========================================================= */
+:root {
+  /* Bento-density overrides — explicit, named, project-local */
+  --tile-pad: var(--sp-3);
+  --tile-radius: var(--r-3);
+  --bento-gap: var(--sp-3);
+  --dock-w: 64px;
+
+  /* Floating chat placeholder — sizing tokens (b02-01-02 placeholder; final design TBD) */
+  --chat-button-size: 48px;
+  --chat-panel-w: 320px;
+  --chat-panel-h: 480px;
+
+  /* Clipped state — shared visual treatment across all opted-in source tiles
+     (b02-06). Derived from accent + surface so each of the 18 themes gets a
+     tinted highlight without per-theme overrides. */
+  --clipped-bg: color-mix(in oklab, var(--accent) 12%, var(--surface));
+  --clipped-border: var(--accent-border);
+}
+
+/* =========================================================
+   Base
+   ========================================================= */
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--surface);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: calc(15px * var(--font-scale));
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+/* Viewport-fit: no document scroll on the dashboard. Scroll lives inside cards. */
+html, body { height: 100%; }
+body { overflow: hidden; }
+
+/* =========================================================
+   Tile primitives (bento-dense, design-system aligned)
+   ========================================================= */
+.tile {
+  position: relative;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--tile-radius);
+  padding: var(--tile-pad);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  transition: border-color 120ms ease;
+}
+.tile:hover { border-color: var(--fg-muted); }
+
+.tile-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.meta-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-tiny);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.card-text {
+  font-size: var(--text-xs);
+  line-height: 1.3;
+}
+
+.big-number {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* =========================================================
+   Card overlay (maximize) — open animation
+   ========================================================= */
+@keyframes lens-overlay-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes lens-overlay-panel-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.lens-overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: color-mix(in oklab, var(--surface) 60%, transparent);
+  backdrop-filter: blur(4px);
+  animation: lens-overlay-backdrop-in 160ms ease-out both;
+}
+.lens-overlay-panel {
+  position: absolute;
+  inset: var(--sp-6);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--tile-radius);
+  padding: var(--tile-pad);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  transform-origin: center;
+  animation: lens-overlay-panel-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.lens-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding-bottom: var(--sp-2);
+}
+.lens-overlay-spacer {
+  display: inline-block;
+  width: 32px;
+}
+.lens-overlay-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-1);
+  border-radius: var(--r-2);
+  color: var(--fg-muted);
+  transition: opacity 120ms ease;
+}
+.lens-overlay-close:hover {
+  opacity: 0.7;
+}
+.lens-overlay-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.lens-maximize-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.lens-maximize-tile {
+  height: 100%;
+}
+.lens-maximize-loading {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: var(--fg-muted);
+}
+
+/* =========================================================
+   Grid surface — fixed 20×20 viewport-fit grid
+   ========================================================= */
+.grid-surface-wrapper {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--sp-3);
+  background: var(--surface);
+}
+
+.grid-surface {
+  position: relative;
+  display: grid;
+  grid-template-rows: repeat(20, minmax(0, 1fr));
+  grid-template-columns: repeat(20, minmax(0, 1fr));
+  gap: var(--sp-3);
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size:
+    calc((100% + var(--sp-3)) / 20) calc((100% + var(--sp-3)) / 20);
+  background-position: 0 0;
+  border: 1px solid var(--border);
+  transition: opacity 120ms ease, border-color 120ms ease, background-image 120ms ease;
+}
+
+.grid-surface[data-grid-visible="false"] {
+  background-image: none;
+  border-color: transparent;
+}
+
+.grid-surface-wrapper[data-letterbox="true"] .grid-surface {
+  max-width: 1920px;
+}
+
+.empty-grid-affordance {
+  grid-row: 9 / span 4;
+  grid-column: 9 / span 4;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  color: var(--fg-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.grid-surface-toosmall {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  width: 100%;
+  height: 100%;
+  padding: var(--sp-8);
+  text-align: center;
+  color: var(--fg-muted);
+  background: var(--surface);
+}
+
+/* =========================================================
+   Dock (final 6 items)
+   ========================================================= */
+.lens-dock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-4);
+  width: var(--dock-w);
+  height: 100%;
+  padding-top: var(--sp-4);
+  padding-bottom: var(--sp-4);
+  border-right: 1px solid var(--border);
+  background: var(--surface-alt);
+  cursor: default;
+  user-select: none;
+}
+
+/* Dock position swap — dock moves to right edge when html[data-dock-pos="right"]. */
+html[data-dock-pos="right"] .lens-shell {
+  flex-direction: row-reverse;
+}
+html[data-dock-pos="right"] .lens-dock {
+  border-right: 0;
+  border-left: 1px solid var(--border);
+}
+
+.lens-dock-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--fg-2);
+  transition: color 120ms ease;
+}
+
+.lens-dock-divider {
+  width: 24px;
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background: var(--border);
+}
+
+.lens-dock-brand:hover {
+  color: var(--fg);
+}
+
+.lens-dock-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.lens-dock-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-2);
+  background: transparent;
+  color: var(--fg-muted);
+  transition: background 120ms ease, color 120ms ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.lens-dock-btn:hover:not(.lens-dock-btn--disabled) {
+  color: var(--fg);
+  background: var(--surface-muted);
+}
+
+.lens-dock-btn[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+.lens-dock-btn--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.lens-dock-btn[data-active="true"] {
+  color: var(--accent);
+  background: var(--surface-muted);
+}
+
+/* =========================================================
+   Pinboard — optional second nav bar opposite the Dock (b02-11)
+   ========================================================= */
+.lens-pinboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  width: var(--dock-w);
+  height: 100%;
+  padding-top: var(--sp-4);
+  padding-bottom: var(--sp-4);
+  border-left: 1px solid var(--border);
+  background: var(--surface-alt);
+  cursor: default;
+  user-select: none;
+}
+
+/* When the Dock is on the right, the Pinboard moves to the left edge. */
+html[data-dock-pos="right"] .lens-pinboard {
+  border-left: 0;
+  border-right: 1px solid var(--border);
+}
+
+.lens-pinboard-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.lens-pin-btn {
+  position: relative;
+}
+
+.lens-pin-btn--add {
+  opacity: 0.7;
+}
+.lens-pin-btn--add:hover {
+  opacity: 1;
+}
+
+.lens-pin-favicon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  border-radius: var(--r-sm);
+}
+
+.lens-pin-icon-mode {
+  margin-bottom: var(--sp-2);
+}
+
+.lens-pin-icon-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-top: var(--sp-2);
+  padding: var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  background: var(--surface-muted);
+}
+
+.lens-pin-dialog-error {
+  color: var(--accent);
+  font-size: var(--text-xxs);
+  margin-top: var(--sp-1);
+}
+
+/* =========================================================
+   Workspace switcher — sandwiched in the dock between dividers
+   ========================================================= */
+.lens-ws-switcher {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+}
+
+.lens-ws-btn {
+  position: relative;
+}
+
+.lens-ws-btn--add {
+  color: var(--fg-muted);
+  opacity: 0.7;
+}
+.lens-ws-btn--add:hover {
+  opacity: 1;
+}
+
+/* Active workspace ring */
+.lens-dock-btn[aria-pressed="true"].lens-ws-btn {
+  color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent-border);
+}
+
+/* Workspace context menu (right-click) */
+.lens-ws-context-menu {
+  position: fixed;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  padding: var(--sp-1);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--r-3);
+  box-shadow: var(--shadow-card);
+}
+
+.lens-ws-context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2);
+  border-radius: var(--r-2);
+  background: transparent;
+  color: var(--fg);
+  font-size: var(--text-xs);
+  text-align: left;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.lens-ws-context-menu-item:hover:not(:disabled) {
+  background: var(--surface-muted);
+}
+.lens-ws-context-menu-item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.lens-ws-context-menu-item--danger {
+  color: var(--label-red);
+}
+.lens-ws-context-menu-sep {
+  height: 1px;
+  background: var(--border);
+  margin: var(--sp-1) 0;
+}
+
+/* =========================================================
+   Workspace dialog — modal for create / rename / delete
+   ========================================================= */
+.lens-ws-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
+  backdrop-filter: blur(4px);
+  animation: lens-overlay-backdrop-in 160ms ease-out both;
+  cursor: default;
+}
+
+.lens-ws-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  width: min(440px, calc(100vw - var(--sp-6) * 2));
+  padding: var(--sp-4);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--r-3);
+  box-shadow: var(--shadow-card);
+  animation: lens-overlay-panel-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  cursor: default;
+  user-select: none;
+}
+
+.lens-ws-dialog-input {
+  cursor: text;
+  user-select: text;
+}
+
+.lens-ws-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.lens-ws-dialog-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.lens-ws-dialog-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-2);
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.lens-ws-dialog-close:hover {
+  background: var(--surface-muted);
+  color: var(--fg);
+}
+
+.lens-ws-dialog-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.lens-ws-dialog-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.lens-ws-dialog-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.lens-ws-dialog-input {
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  color: var(--fg);
+  font-size: var(--text-sm);
+  outline: none;
+  transition: border-color 120ms ease;
+}
+.lens-ws-dialog-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.lens-ws-dialog-warning {
+  margin: 0;
+  color: var(--fg-2);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+.lens-ws-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+}
+
+.lens-ws-dialog-btn {
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-2);
+  background: transparent;
+  color: var(--fg);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+  border: 1px solid transparent;
+}
+.lens-ws-dialog-btn--ghost {
+  color: var(--fg-muted);
+}
+.lens-ws-dialog-btn--ghost:hover {
+  color: var(--fg);
+  background: var(--surface-muted);
+}
+.lens-ws-dialog-btn--primary {
+  background: var(--accent);
+  color: var(--accent-on);
+}
+.lens-ws-dialog-btn--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+.lens-ws-dialog-btn--primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.lens-ws-dialog-btn--danger {
+  background: var(--label-red);
+  color: var(--accent-on);
+}
+.lens-ws-dialog-btn--danger:hover {
+  filter: brightness(0.92);
+}
+
+/* Workspace icon picker grid */
+.lens-ws-icon-picker {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: var(--sp-1);
+  padding: var(--sp-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  background: var(--surface);
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.lens-ws-icon-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-2);
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.lens-ws-icon-picker-item:hover {
+  background: var(--surface-muted);
+  color: var(--fg);
+}
+.lens-ws-icon-picker-item[data-active="true"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent-border);
+}
+
+.lens-ws-icon-picker-browse {
+  margin-top: var(--sp-2);
+  padding: var(--sp-1) var(--sp-2);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  color: var(--fg-muted);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.lens-ws-icon-picker-browse:hover {
+  background: var(--surface-muted);
+  color: var(--fg);
+  border-color: var(--accent-border);
+}
+
+/* =========================================================
+   Workspace icon browser — full lucide set with search
+   ========================================================= */
+.lens-ws-icon-browse-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lens-ws-icon-browse {
+  width: min(640px, 92vw);
+  height: min(560px, 80vh);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-3);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+}
+
+.lens-ws-icon-browse-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.lens-ws-icon-browse-search {
+  flex: 1 1 auto;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  padding: var(--sp-1) var(--sp-2);
+  color: var(--fg);
+  font: inherit;
+}
+.lens-ws-icon-browse-search:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.lens-ws-icon-browse-count {
+  color: var(--fg-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.lens-ws-icon-browse-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-2);
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+.lens-ws-icon-browse-close:hover {
+  background: var(--surface-muted);
+  color: var(--fg);
+}
+
+.lens-ws-icon-browse-grid {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: var(--sp-1);
+  padding: var(--sp-3);
+  align-content: start;
+}
+
+.lens-ws-icon-browse-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-2);
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.lens-ws-icon-browse-item:hover {
+  background: var(--surface-muted);
+  color: var(--fg);
+}
+.lens-ws-icon-browse-item[data-active="true"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent-border);
+}
+
+.lens-ws-icon-browse-empty {
+  grid-column: 1 / -1;
+  padding: var(--sp-4);
+  text-align: center;
+  color: var(--fg-muted);
+}
+
+/* =========================================================
+   Theme picker — popover anchored to dock palette button
+   ========================================================= */
+.lens-theme-picker {
+  position: relative;
+}
+
+.lens-theme-picker-popover {
+  position: absolute;
+  left: calc(100% + var(--sp-2));
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  min-width: 200px;
+  padding: var(--sp-3);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--r-3);
+  box-shadow: var(--shadow-card);
+}
+
+.lens-theme-picker-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lens-theme-picker-grouphead {
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  padding: var(--sp-1) var(--sp-2);
+}
+
+.lens-theme-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-2);
+  background: transparent;
+  color: var(--fg);
+  font-size: var(--text-xs);
+  text-align: left;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.lens-theme-picker-item:hover {
+  background: var(--surface-muted);
+}
+
+.lens-theme-picker-item[data-active="true"] {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* =========================================================
+   Floating chat — placeholder visual (b01-01 carryover)
+   Final design TBD. Sizes are placeholder tokens, not DS scale.
+   ========================================================= */
+.lens-chat-button {
+  position: fixed;
+  bottom: var(--sp-6);
+  right: var(--sp-6);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--chat-button-size);
+  height: var(--chat-button-size);
+  border-radius: var(--r-3);
+  background: var(--accent);
+  color: var(--surface);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transition: opacity 120ms ease;
+}
+
+.lens-chat-button:hover {
+  opacity: 0.9;
+}
+
+.lens-chat-panel {
+  position: fixed;
+  bottom: var(--sp-6);
+  right: var(--sp-6);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  width: var(--chat-panel-w);
+  height: var(--chat-panel-h);
+  border: 1px solid var(--border);
+  border-radius: var(--r-4);
+  background: var(--surface-alt);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  overflow: hidden;
+}
+
+.lens-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.lens-chat-footer {
+  padding: var(--sp-3);
+  border-top: 1px solid var(--border);
+}
+
+/* =========================================================
+   Card chrome — top-bar drag handle + gear-on-hover
+   ========================================================= */
+.lens-card-chrome {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--tile-radius);
+  overflow: hidden;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+  user-select: none;
+}
+.lens-card-chrome:hover {
+  border-color: var(--fg-muted);
+}
+.lens-card-chrome[data-dragging="true"] {
+  border-color: var(--accent);
+  box-shadow: 0 10px 25px -10px rgb(0 0 0 / 0.25);
+  z-index: 10;
+}
+.lens-card-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-2);
+  background: var(--surface-muted);
+  border-bottom: 1px solid var(--border);
+  cursor: grab;
+  touch-action: none;
+}
+.lens-card-topbar[data-custom-content="true"] {
+  position: relative;
+  padding: var(--sp-1) var(--tile-pad);
+}
+.lens-card-topbar[data-custom-content="true"] .lens-card-gear {
+  position: absolute;
+  right: var(--sp-1);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: var(--surface-muted);
+}
+.lens-card-chrome[data-dragging="true"] .lens-card-topbar {
+  cursor: grabbing;
+}
+.lens-card-topbar-label-wrap {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+.lens-card-topbar-label {
+  display: inline-block;
+  max-width: 100%;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.lens-card-topbar-label[data-link="true"] {
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+.lens-card-topbar-label[data-link="true"]:hover {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.lens-card-gear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-2);
+  color: var(--fg-muted);
+  opacity: 0;
+  transition: opacity 120ms ease, color 120ms ease, background 120ms ease;
+}
+.lens-card-chrome:hover .lens-card-gear,
+.lens-card-gear:focus-visible {
+  opacity: 1;
+}
+.lens-card-gear:hover {
+  color: var(--fg);
+  background: var(--surface);
+}
+.lens-card-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: var(--tile-pad);
+  background: var(--surface-raised);
+}
+
+/* Stub-card body content for placeholder modes (b02-01-03 stubs;
+   b02-01-04 ports real renderers into connectors/google-calendar/modes/) */
+.lens-stub-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-1);
+  height: 100%;
+  text-align: center;
+  color: var(--fg-muted);
+}
+
+/* =========================================================
+   Add-card / Edit-card panel (right-docked)
+   ========================================================= */
+.lens-panel-root {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+.lens-panel-aside {
+  pointer-events: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-alt);
+  border-left: 1px solid var(--border);
+  box-shadow: -10px 0 30px -10px rgb(0 0 0 / 0.15);
+  animation: lens-panel-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes lens-panel-in {
+  from { transform: translateX(8px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+.lens-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+.lens-panel-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-2);
+  color: var(--fg-muted);
+  transition: color 120ms ease, background 120ms ease;
+}
+.lens-panel-close:hover {
+  color: var(--fg);
+  background: var(--surface-muted);
+}
+.lens-panel-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+}
+.lens-panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.lens-panel-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.lens-panel-option {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  background: var(--surface);
+  text-align: left;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.lens-panel-option:hover:not(:disabled) {
+  border-color: var(--fg-muted);
+}
+.lens-panel-option[data-active="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.lens-panel-option-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  color: var(--fg-2);
+}
+.lens-panel-option-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.lens-panel-size-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.lens-panel-size-input {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex: 1;
+}
+.lens-panel-size-input input {
+  flex: 1;
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  background: var(--surface);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  outline: none;
+}
+.lens-panel-size-input input:focus {
+  border-color: var(--accent);
+}
+.lens-panel-size-input input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.lens-panel-size-x {
+  color: var(--fg-muted);
+}
+.lens-panel-size-helper {
+  font-size: 12px;
+}
+.lens-panel-error {
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--r-2);
+  background: var(--accent-soft);
+  color: var(--accent-solid);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.lens-panel-notice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-3);
+  border: 1px dashed var(--border);
+  border-radius: var(--r-2);
+  background: var(--surface);
+  color: var(--fg-muted);
+}
+.lens-panel-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-top: 1px solid var(--border);
+}
+.lens-panel-spacer {
+  flex: 1;
+}
+.lens-panel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-2);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease, opacity 120ms ease;
+}
+.lens-panel-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.lens-panel-btn--ghost {
+  color: var(--fg-muted);
+  background: transparent;
+  border-color: var(--border);
+}
+.lens-panel-btn--ghost:hover:not(:disabled) {
+  color: var(--fg);
+  border-color: var(--fg-muted);
+}
+.lens-panel-btn--primary {
+  color: var(--accent-on);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.lens-panel-btn--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+.lens-panel-btn--danger {
+  color: var(--accent-on);
+  background: var(--red);
+  border-color: var(--red);
+}
+.lens-panel-btn--danger:hover:not(:disabled) {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+}
+.lens-panel-btn--delete {
+  color: var(--fg-muted);
+}
+.lens-panel-btn--delete:hover:not(:disabled) {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+/* Confirm dialog (delete / connector-change) */
+.lens-confirm-root {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+}
+.lens-confirm-backdrop {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--surface) 50%, transparent);
+  backdrop-filter: blur(2px);
+}
+.lens-confirm-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  width: min(380px, calc(100vw - 2 * var(--sp-6)));
+  padding: var(--sp-4);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--r-4);
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+.lens-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+}
+
+/* Ghost preview rectangle on the grid surface (panel placement target) */
+.grid-ghost-preview {
+  pointer-events: none;
+  border: 1px dashed var(--accent);
+  border-radius: var(--r-2);
+  background: var(--accent-soft);
+  opacity: 0.7;
+  z-index: 5;
+}
+
+/* =========================================================
+   Panel — config-body fields (calendar dropdown, segmented, range)
+   ========================================================= */
+.lens-panel-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.lens-panel-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.lens-panel-field-loading,
+.lens-panel-field-helper {
+  color: var(--fg-muted);
+}
+.lens-panel-field-error {
+  color: var(--red);
+}
+.lens-panel-select {
+  font-family: var(--font-body);
+  font-size: var(--text-tiny);
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  padding: var(--sp-1) var(--sp-2);
+  outline: none;
+  transition: border-color 120ms ease;
+}
+.lens-panel-select:focus {
+  border-color: var(--accent);
+}
+.lens-panel-select:disabled {
+  color: var(--fg-muted);
+  background: var(--surface-muted);
+}
+.lens-panel-segmented {
+  display: inline-flex;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  overflow: hidden;
+  align-self: start;
+}
+.lens-panel-segmented-btn {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  background: var(--surface);
+  padding: var(--sp-1) var(--sp-3);
+  border-right: 1px solid var(--border);
+  transition: background 120ms ease, color 120ms ease;
+}
+.lens-panel-segmented-btn:last-child { border-right: 0; }
+.lens-panel-segmented-btn:hover { color: var(--fg); }
+.lens-panel-segmented-btn[data-active="true"] {
+  color: var(--accent-on);
+  background: var(--accent);
+}
+.lens-panel-range {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.lens-panel-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  padding: var(--sp-1);
+  max-height: 12rem;
+  overflow-y: auto;
+}
+.lens-panel-checklist-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-2);
+  font-family: var(--font-body);
+  font-size: var(--text-tiny);
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.lens-panel-checklist-row:hover { color: var(--fg); background: var(--surface-alt); }
+.lens-panel-checklist-row[data-active="true"] { color: var(--fg); }
+.lens-panel-checklist-row input[type="checkbox"] { accent-color: var(--accent); }
+.lens-panel-input {
+  font-family: var(--font-mono);
+  font-size: var(--text-tiny);
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  padding: var(--sp-1) var(--sp-2);
+  outline: none;
+  transition: border-color 120ms ease;
+}
+.lens-panel-input:focus {
+  border-color: var(--accent);
+}
+.lens-panel-input[aria-invalid="true"] {
+  border-color: var(--red);
+}
+
+/* =========================================================
+   Calendar renderers — shared empty / error states
+   ========================================================= */
+.lens-cal-state {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 0 var(--sp-2);
+}
+.lens-cal-state-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+}
+.lens-cal-state-loading,
+.lens-cal-state-sub {
+  color: var(--fg-muted);
+}
+.lens-cal-error-pill {
+  display: inline-block;
+  padding: 2px var(--sp-2);
+  border-radius: 999px;
+  color: var(--red);
+  background: color-mix(in oklab, var(--red) 14%, var(--surface-alt));
+  border: 1px solid color-mix(in oklab, var(--red) 30%, transparent);
+}
+
+/* =========================================================
+   Calendar — Today
+   ========================================================= */
+.lens-cal-today-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.lens-cal-allday-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  padding-bottom: var(--sp-2);
+  margin-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.lens-cal-allday-chip {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--fg);
+  line-height: 1.2;
+  border-radius: var(--r-2);
+  border-left: 2px solid var(--accent);
+  padding: 2px var(--sp-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.lens-cal-today-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: var(--sp-1);
+  margin-right: calc(var(--sp-1) * -1);
+}
+.lens-cal-today-track {
+  position: relative;
+}
+.lens-cal-today-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+}
+.lens-cal-today-hour {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  letter-spacing: 0.05em;
+}
+.lens-cal-today-rule {
+  flex: 1;
+  border-top: 1px solid var(--border);
+  opacity: 0.6;
+  margin-top: 0;
+}
+.lens-cal-today-event {
+  position: absolute;
+  border-radius: var(--r-2);
+  border-left: 2px solid var(--accent);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3);
+  cursor: pointer;
+  transition: filter 120ms ease;
+}
+.lens-cal-today-event:hover { filter: brightness(1.05); }
+.lens-cal-today-event-title {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--fg);
+  text-align: left;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lens-cal-today-event-time {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  text-align: left;
+  line-height: 1.3;
+}
+.lens-cal-today-now {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+.lens-cal-today-now-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--red);
+}
+.lens-cal-today-now-line {
+  flex: 1;
+  height: 1px;
+  background: var(--red);
+}
+
+/* =========================================================
+   Calendar — Week
+   ========================================================= */
+.lens-cal-week-scroll {
+  height: 100%;
+  overflow: auto;
+}
+.lens-cal-week-grid {
+  display: grid;
+  min-width: 100%;
+  grid-template-columns: 36px repeat(7, minmax(0, 1fr));
+  grid-auto-rows: 22px;
+}
+.lens-cal-week-grid > :first-child { grid-row: 1; }
+.lens-cal-week-daycell {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--sp-1);
+}
+.lens-cal-week-daycell[data-today="true"] { color: var(--accent); }
+.lens-cal-week-hourcell {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  text-align: right;
+  padding-right: var(--sp-1);
+  padding-top: 2px;
+  border-top: 1px solid var(--border);
+}
+.lens-cal-week-cell {
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+.lens-cal-week-event {
+  margin: 1px;
+  padding: var(--sp-1) var(--sp-2);
+  border-left: 2px solid var(--accent);
+  border-radius: 3px;
+  overflow: hidden;
+  color: var(--fg);
+}
+.lens-cal-week-event-title {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  display: block;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+.lens-cal-week-allday-gutter {
+  border-bottom: 1px solid var(--border);
+}
+.lens-cal-week-allday-area {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--border);
+}
+.lens-cal-week-allday-bar {
+  border-left: 2px solid var(--accent);
+  border-radius: 3px;
+  padding: 2px var(--sp-2);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: 0;
+}
+.lens-cal-week-allday-title {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--fg);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   Calendar — Month
+   ========================================================= */
+.lens-cal-month-shell {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  min-height: 0;
+}
+.lens-cal-month-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+.lens-cal-month-dayname {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  text-align: center;
+}
+.lens-cal-month-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 1px;
+  background: var(--border);
+  padding: 1px;
+  border-radius: var(--r-2);
+  min-height: 0;
+}
+.lens-cal-month-cell {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 2px;
+  background: var(--surface-alt);
+}
+.lens-cal-month-cell[data-in-month="false"] {
+  background: var(--surface-muted);
+  opacity: 0.6;
+}
+.lens-cal-month-daynum {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  line-height: 1;
+  padding: 0 2px;
+}
+.lens-cal-month-daynum[data-today="true"] {
+  color: var(--accent);
+  font-weight: 600;
+}
+.lens-cal-month-dots {
+  margin-top: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  overflow: hidden;
+}
+.lens-cal-month-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.lens-cal-month-overflow {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  line-height: 1;
+}
+
+/* =========================================================
+   Calendar — Macro
+   ========================================================= */
+.lens-cal-macro-grid {
+  --lens-cal-macro-track-h: 1.75rem;
+  position: relative;
+  margin: calc(var(--tile-pad) * -1);
+  width: calc(100% + var(--tile-pad) * 2);
+  height: calc(100% + var(--tile-pad) * 2);
+  display: grid;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.lens-cal-macro-topbar {
+  position: relative;
+  flex: 1 1 auto;
+  align-self: stretch;
+  min-width: 0;
+  min-height: 1.5rem;
+}
+.lens-cal-macro-topbar-label {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.lens-cal-macro-weekend {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: color-mix(in oklab, var(--fg-muted) 10%, transparent);
+  pointer-events: none;
+}
+.lens-cal-macro-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px solid color-mix(in oklab, var(--fg-muted) 25%, transparent);
+  pointer-events: none;
+}
+.lens-cal-macro-bar {
+  position: relative;
+  z-index: 2;
+  margin: 2px;
+  border-radius: var(--r-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px var(--sp-3);
+  cursor: pointer;
+  transition: filter 120ms ease;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--accent);
+  box-shadow: 0 1px 2px -1px rgb(0 0 0 / 0.15);
+}
+.lens-cal-macro-bar:hover { filter: brightness(1.1); }
+.lens-cal-macro-bar-title {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  line-height: 1;
+  color: var(--accent-on);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lens-cal-macro-now {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px solid var(--red);
+  z-index: 3;
+  pointer-events: none;
+}
+.lens-cal-macro-now-dot {
+  position: absolute;
+  top: 0;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--red);
+}
+
+/* =========================================================
+   Trello — list view (vertical card stack)
+   ========================================================= */
+.lens-trello-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  height: 100%;
+  overflow-y: auto;
+  padding-right: var(--sp-1);
+  margin-right: calc(var(--sp-1) * -1);
+}
+.lens-trello-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-1);
+  padding: var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  /* Subtle tonal shift toward the topbar (`--surface-muted`) so each row
+     reads as a distinct card against the body, theme by theme. */
+  background: color-mix(in oklab, var(--surface-muted) 35%, var(--surface-raised));
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  color: var(--fg);
+  transition: border-color 120ms ease, background 120ms ease, box-shadow 120ms ease;
+  /* Whole-card click target — wrapper is a <button> in b02-06. */
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+.lens-trello-card:hover {
+  border-color: var(--fg-muted);
+}
+.lens-trello-card-listname {
+  color: var(--fg-muted);
+  font-size: var(--text-xxs);
+  letter-spacing: 0.08em;
+}
+.lens-trello-card-title {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--fg);
+  text-align: left;
+  line-height: 1.3;
+}
+.lens-trello-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+}
+.lens-trello-label {
+  display: inline-block;
+  padding: 1px var(--sp-2);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  letter-spacing: 0.04em;
+  background: color-mix(in oklab, var(--label, var(--accent)) 18%, var(--surface));
+  color: var(--label, var(--accent));
+  border: 1px solid color-mix(in oklab, var(--label, var(--accent)) 32%, transparent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.lens-trello-card-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-1);
+}
+.lens-trello-card-spacer { flex: 1; }
+.lens-trello-due {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px var(--sp-2);
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--fg-muted);
+  font-size: var(--text-xxs);
+}
+.lens-trello-due[data-past="true"] {
+  background: color-mix(in oklab, var(--red) 16%, var(--surface));
+  color: var(--red);
+}
+.lens-trello-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: var(--text-xxs);
+  color: var(--fg-muted);
+}
+
+/* Trello label palette — uses theme-defined --label-* semantic tokens.
+   Each registered theme remaps --label-* in its own tokens.css; no
+   [data-theme] overrides needed here. */
+.lens-trello-label--green   { --label: var(--label-green); }
+.lens-trello-label--yellow  { --label: var(--label-yellow); }
+.lens-trello-label--orange  { --label: var(--label-orange); }
+.lens-trello-label--red     { --label: var(--label-red); }
+.lens-trello-label--purple  { --label: var(--label-purple); }
+.lens-trello-label--blue    { --label: var(--label-blue); }
+.lens-trello-label--sky     { --label: var(--label-sky); }
+.lens-trello-label--lime    { --label: var(--label-lime); }
+.lens-trello-label--pink    { --label: var(--label-pink); }
+.lens-trello-label--black   { --label: var(--label-black); }
+.lens-trello-label--gray    { --label: var(--label-gray); }
+
+/* =========================================================
+   Trello — board view (kanban columns)
+   ========================================================= */
+.lens-trello-board {
+  display: flex;
+  gap: var(--sp-2);
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.lens-trello-board-col {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 200px;
+  min-width: 0;
+  height: 100%;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  padding: var(--sp-2);
+  gap: var(--sp-2);
+}
+.lens-trello-board-colhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+.lens-trello-board-colname {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+.lens-trello-board-count {
+  color: var(--fg-muted);
+}
+.lens-trello-board-collist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  padding-right: var(--sp-1);
+  margin-right: calc(var(--sp-1) * -1);
+}
+.lens-trello-board-empty {
+  color: var(--fg-muted);
+  text-align: center;
+  padding: var(--sp-2) 0;
+}
+
+/* =========================================================
+   Trello — config panel (multi-list selector)
+   ========================================================= */
+.lens-trello-multilist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+}
+
+/* =========================================================
+   Google Sheets — range table
+   ========================================================= */
+.lens-sheets-range-scroll {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.lens-sheets-range-table {
+  border-collapse: collapse;
+  width: max-content;
+  min-width: 100%;
+}
+.lens-sheets-range-th,
+.lens-sheets-range-td {
+  border-bottom: 1px solid var(--border);
+  padding: var(--sp-1) var(--sp-2);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+.lens-sheets-range-th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-muted);
+  color: var(--fg-muted);
+  border-bottom-color: var(--border-strong, var(--border));
+  z-index: 1;
+}
+.lens-sheets-range-td {
+  color: var(--fg);
+}
+.lens-sheets-range-table tbody tr:hover .lens-sheets-range-td {
+  background: var(--surface-muted);
+}
+
+/* =========================================================
+   Google Sheets — cell KPI tile
+   ========================================================= */
+.lens-sheets-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  gap: var(--sp-1);
+  padding: var(--sp-2);
+  text-align: center;
+}
+.lens-sheets-cell-value {
+  color: var(--fg);
+  line-height: 1;
+}
+.lens-sheets-cell-label {
+  color: var(--fg-muted);
+}
+
+/* =========================================================
+   Keep — note list (recent + label modes)
+   ========================================================= */
+.lens-keep-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  height: 100%;
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: var(--sp-1);
+  margin-right: calc(var(--sp-1) * -1);
+}
+.lens-keep-note {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-2);
+  border-radius: var(--r-2);
+  border: 1px solid var(--note-border, var(--border));
+  background: var(--note-bg, var(--surface-muted));
+  border-left: 3px solid var(--note-rail, var(--note-border, var(--border)));
+}
+.lens-keep-note-title {
+  color: var(--fg);
+  text-align: left;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  line-height: 1.25;
+  margin: 0;
+  word-break: break-word;
+}
+.lens-keep-note-body {
+  color: var(--fg-2);
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Keep per-note color palette — DS-mapped, theme-safe.
+   --note-bg / --note-border use color-mix over the theme's --label-*
+   tokens; --note-rail picks the theme-correct semantic label color
+   directly so dark themes get a brighter rail without overrides. */
+.lens-keep-note--white   { --note-bg: var(--surface-muted); --note-border: var(--border); --note-rail: var(--border); }
+.lens-keep-note--red     { --note-bg: color-mix(in oklab, var(--label-red)    12%, var(--surface)); --note-border: color-mix(in oklab, var(--label-red)    32%, var(--border)); --note-rail: var(--label-red); }
+.lens-keep-note--orange  { --note-bg: color-mix(in oklab, var(--label-orange) 12%, var(--surface)); --note-border: color-mix(in oklab, var(--label-orange) 32%, var(--border)); --note-rail: var(--label-orange); }
+.lens-keep-note--yellow  { --note-bg: color-mix(in oklab, var(--label-yellow) 14%, var(--surface)); --note-border: color-mix(in oklab, var(--label-yellow) 34%, var(--border)); --note-rail: var(--label-yellow); }
+.lens-keep-note--green   { --note-bg: color-mix(in oklab, var(--label-green)  12%, var(--surface)); --note-border: color-mix(in oklab, var(--label-green)  32%, var(--border)); --note-rail: var(--label-green); }
+.lens-keep-note--teal    { --note-bg: color-mix(in oklab, var(--label-blue) 8%, color-mix(in oklab, var(--label-green) 8%, var(--surface))); --note-border: color-mix(in oklab, var(--label-green) 28%, var(--border)); --note-rail: color-mix(in oklab, var(--label-green) 60%, var(--label-blue)); }
+.lens-keep-note--blue    { --note-bg: color-mix(in oklab, var(--label-blue)   12%, var(--surface)); --note-border: color-mix(in oklab, var(--label-blue)   32%, var(--border)); --note-rail: var(--label-blue); }
+.lens-keep-note--darkblue{ --note-bg: color-mix(in oklab, var(--label-blue)   18%, var(--surface)); --note-border: color-mix(in oklab, var(--label-blue)   38%, var(--border)); --note-rail: var(--label-blue); }
+.lens-keep-note--purple  { --note-bg: color-mix(in oklab, var(--label-purple) 12%, var(--surface)); --note-border: color-mix(in oklab, var(--label-purple) 32%, var(--border)); --note-rail: var(--label-purple); }
+.lens-keep-note--pink    { --note-bg: color-mix(in oklab, var(--label-pink) 8%, color-mix(in oklab, var(--label-purple) 8%, var(--surface))); --note-border: color-mix(in oklab, var(--label-purple) 28%, var(--border)); --note-rail: color-mix(in oklab, var(--label-purple) 60%, var(--label-pink)); }
+.lens-keep-note--brown   { --note-bg: color-mix(in oklab, var(--label-orange) 10%, var(--surface)); --note-border: color-mix(in oklab, var(--label-orange) 30%, var(--border)); --note-rail: var(--label-orange); }
+.lens-keep-note--gray    { --note-bg: var(--surface-alt); --note-border: var(--border); --note-rail: var(--fg-muted); }
+
+/* =========================================================
+   Scratchpad — single editable note bound to a source row
+   ========================================================= */
+.lens-scratchpad-editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  height: 100%;
+  min-height: 0;
+  /* Body provides the sp-2 inset via the :has(> .lens-scratchpad-editor) rule;
+     editor has no own padding so the inner card sits exactly where a trello-list
+     card would sit. */
+}
+.lens-scratchpad-card {
+  position: relative;
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  padding: var(--sp-2);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  box-shadow: var(--shadow-card);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+  cursor: text;
+}
+.lens-scratchpad-drag-icon {
+  position: absolute;
+  top: var(--sp-1);
+  right: var(--sp-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg);
+  opacity: 0.4; /* visible but de-emphasized when there's nothing to drag */
+  pointer-events: none; /* card handles the drag; icon is the visual cue */
+  transition: opacity 120ms ease;
+}
+.lens-scratchpad-drag-icon[data-can-drag="true"] {
+  opacity: 1;
+}
+.lens-scratchpad-card[data-can-drag="true"] {
+  cursor: grab;
+}
+.lens-scratchpad-card[data-dragging="true"] {
+  opacity: 0.6;
+  cursor: grabbing;
+}
+.lens-scratchpad-textarea {
+  flex: 1;
+  width: 100%;
+  resize: none;
+  background: transparent;
+  color: var(--fg);
+  border: 0;
+  outline: none;
+  padding: 0;
+  font: inherit;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow: auto;
+}
+.lens-scratchpad-textarea[readonly] {
+  color: var(--fg-muted);
+  cursor: default;
+}
+.lens-scratchpad-readonly {
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* =========================================================
+   Google Tasks — list + due views
+   ========================================================= */
+/* Unified single-surface pattern: cards whose content is NOT a list of sub-cards
+   (Tasks, Sheets, Scratchpad) wrap their content in one raised surface that fills
+   the body. Sub-card connectors (Trello, Goodreads) keep their per-row surfaces. */
+.lens-card-surface {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+/* Single-surface cards: bake the raised bg into the card body itself,
+   eliminating the inner sub-card. Scratchpad-editor opts into the same
+   sp-2 inset (instead of the default --tile-pad sp-3) so its inner paper
+   card matches the trello-list / task-list inset exactly. */
+.lens-card-body:has(> .lens-card-surface),
+.lens-card-body:has(> .lens-scratchpad-editor) {
+  background: var(--surface-raised);
+  padding: var(--sp-2);
+}
+
+.lens-tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+.lens-tasks-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-2);
+  background: transparent;
+  transition: background 120ms ease;
+}
+.lens-tasks-item:hover {
+  background: color-mix(in oklab, var(--fg) 4%, transparent);
+}
+.lens-tasks-item--stack {
+  flex-direction: column;
+  align-items: stretch;
+}
+.lens-tasks-checkbox {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-muted);
+}
+.lens-tasks-item[data-completed="true"] .lens-tasks-checkbox {
+  color: var(--accent);
+}
+.lens-tasks-item[data-completed="true"] .lens-tasks-item-title {
+  text-decoration: line-through;
+  color: var(--fg-muted);
+}
+.lens-tasks-item-title {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--fg);
+  text-align: left;
+  line-height: 1.3;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lens-tasks-item-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.lens-tasks-item-caption {
+  color: var(--fg-muted);
+  font-size: var(--text-xxs);
+  letter-spacing: 0.08em;
+}
+.lens-tasks-due {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px var(--sp-2);
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--fg-muted);
+  font-size: var(--text-xxs);
+  flex: 0 0 auto;
+  align-self: flex-start;
+}
+.lens-tasks-due[data-past="true"] {
+  background: color-mix(in oklab, var(--red) 16%, var(--surface));
+  color: var(--red);
+}
+
+/* =========================================================
+   Goodreads — vertical list of books with cover thumbnails
+   ========================================================= */
+.lens-goodreads-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: var(--sp-1);
+  margin-right: calc(var(--sp-1) * -1);
+}
+.lens-goodreads-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lens-goodreads-row {
+  display: flex;
+  align-items: stretch;
+  gap: var(--sp-2);
+  background: transparent;
+  text-decoration: none;
+  color: var(--fg);
+}
+.lens-goodreads-cover-tile,
+.lens-goodreads-text-tile {
+  /* Same tonal shift as Trello cards — ties each row to the topbar tone. */
+  background: color-mix(in oklab, var(--surface-muted) 35%, var(--surface-raised));
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: border-color 120ms ease;
+}
+.lens-goodreads-row:hover .lens-goodreads-cover-tile,
+.lens-goodreads-row:hover .lens-goodreads-text-tile {
+  border-color: var(--accent);
+}
+.lens-goodreads-cover-tile {
+  flex: 0 0 auto;
+  display: flex;
+}
+.lens-goodreads-text-tile {
+  flex: 1;
+  min-width: 0;
+  padding: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+.lens-goodreads-row[data-display="title"] .lens-goodreads-cover-tile {
+  width: 44px;
+}
+.lens-goodreads-row[data-display="title-subtitle"] .lens-goodreads-cover-tile {
+  width: 56px;
+}
+.lens-goodreads-row[data-display="full"] .lens-goodreads-cover-tile {
+  width: 64px;
+}
+.lens-goodreads-row[data-display="cover"] .lens-goodreads-cover-tile {
+  width: 100%;
+}
+.lens-goodreads-row[data-display="cover"] {
+  padding: var(--sp-1);
+  justify-content: center;
+}
+.lens-goodreads-cover-tile > .lens-goodreads-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--surface-alt);
+  border: 0;
+  border-radius: 0;
+}
+.lens-goodreads-cover--fallback {
+  background:
+    linear-gradient(135deg, var(--surface-alt) 0%, var(--surface-muted) 100%);
+}
+.lens-goodreads-title {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  line-height: 1.3;
+  color: var(--fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lens-goodreads-author {
+  color: var(--fg-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   Badges with descriptions — chip name on the left,
+   description on the right, stacked rows.
+   ========================================================= */
+.lens-badges-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: var(--sp-1);
+  margin-right: calc(var(--sp-1) * -1);
+}
+.lens-badges-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lens-badges-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  cursor: grab;
+  border-radius: var(--r-md);
+  padding: var(--sp-1);
+  margin: calc(var(--sp-1) * -1) 0;
+  outline: 1px dashed transparent;
+  transition:
+    background-color 120ms ease,
+    outline-color 120ms ease;
+}
+.lens-badges-row[data-dragging="true"] {
+  cursor: grabbing;
+  background: var(--accent-soft);
+  outline-color: var(--accent-border);
+}
+.lens-badge-chip {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px var(--sp-2);
+  border: 1px solid color-mix(in oklab, var(--accent) 32%, transparent);
+  border-radius: var(--r-full);
+  background: color-mix(in oklab, var(--accent) 14%, var(--surface));
+  color: var(--accent-solid);
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  max-width: 35%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lens-badge-desc {
+  flex: 1;
+  min-width: 0;
+  color: var(--fg);
+  line-height: 1.4;
+}
+
+/* =========================================================
+   Settings page (/settings)
+   ========================================================= */
+.lens-settings {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+.lens-settings-content {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: var(--sp-8);
+  padding-bottom: calc(var(--sp-8) * 3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}
+.lens-settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+.lens-settings-title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.lens-settings-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  color: var(--fg-muted);
+  background: transparent;
+  text-decoration: none;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+.lens-settings-close:hover {
+  color: var(--fg);
+  border-color: var(--fg-muted);
+  background: var(--surface-muted);
+}
+.lens-settings-subtitle {
+  margin-top: var(--sp-1);
+  color: var(--fg-muted);
+  font-size: var(--text-sm);
+}
+
+/* Settings sections render as dashboard tiles (.lens-card-chrome) with
+   data-static="true" to opt out of the dashboard's drag/grab affordances
+   and let dropdowns / pickers escape the body. */
+.lens-card-chrome[data-static="true"] {
+  user-select: text;
+}
+.lens-card-chrome[data-static="true"]:hover {
+  border-color: var(--border);
+}
+.lens-card-chrome[data-static="true"] .lens-card-topbar {
+  cursor: default;
+  touch-action: auto;
+}
+.lens-card-chrome[data-static="true"] .lens-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  overflow: visible;
+}
+
+/* Inner "card" shell used inside multi-card settings sections (Connections,
+   Workspaces). Mirrors the dashboard inner-card pattern: lift via shadow,
+   bg from --surface-raised so it pops off the section body. */
+.lens-settings-card {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  box-shadow: var(--shadow-card);
+}
+
+.lens-settings-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: center;
+  gap: var(--sp-4);
+}
+.lens-settings-row-label {
+  font-size: var(--text-sm);
+  color: var(--fg);
+}
+.lens-settings-row-hint {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  margin-top: var(--sp-1);
+}
+.lens-settings-row-value {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+/* Segmented control (dock position, variant pickers) */
+.lens-segmented {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  background: var(--surface);
+  padding: 2px;
+  gap: 2px;
+}
+.lens-segmented-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: var(--sp-1) var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  border-radius: calc(var(--r-2) - 2px);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.lens-segmented-btn:hover { color: var(--fg); }
+.lens-segmented-btn[aria-pressed="true"],
+.lens-segmented-btn[data-pressed="true"],
+.lens-segmented-btn[aria-checked="true"] {
+  background: var(--accent-soft);
+  color: var(--accent-solid);
+}
+
+/* Theme picker dropdown (used per mode) */
+.lens-settings-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  padding: var(--sp-1) var(--sp-3);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  min-width: 220px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--fg-muted) 50%),
+    linear-gradient(135deg, var(--fg-muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 9px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: var(--sp-8);
+}
+.lens-settings-select:focus { outline: 1px solid var(--accent); outline-offset: 1px; }
+
+/* Range slider — minimal, theme-tokenized */
+.lens-settings-range {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 240px;
+  height: 4px;
+  background: var(--border);
+  border-radius: var(--r-full);
+  cursor: pointer;
+}
+.lens-settings-range::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-solid);
+  cursor: pointer;
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--accent-solid);
+}
+.lens-settings-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-solid);
+  cursor: pointer;
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--accent-solid);
+}
+
+/* Compact buttons (inside settings rows) */
+.lens-settings-btn {
+  appearance: none;
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  padding: var(--sp-1) var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.lens-settings-btn:hover { background: var(--surface-muted); color: var(--fg); border-color: var(--fg-muted); }
+.lens-settings-btn--danger { color: var(--accent-solid); }
+.lens-settings-btn--danger:hover { color: var(--surface); background: color-mix(in oklab, var(--accent) 70%, transparent); border-color: var(--accent); }
+
+/* Workspaces list */
+.lens-settings-ws-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.lens-settings-ws-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  /* chrome (bg/border/radius) provided by .lens-settings-card */
+}
+.lens-settings-ws-row[data-active="true"] {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+}
+.lens-settings-ws-row-input {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px dashed transparent;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--fg);
+  padding: var(--sp-1) 0;
+  width: 100%;
+}
+.lens-settings-ws-row-input:focus {
+  outline: 0;
+  border-bottom-color: var(--accent);
+}
+.lens-settings-ws-row-actions {
+  display: flex;
+  gap: var(--sp-1);
+}
+
+/* Section TBD */
+.lens-settings-tbd {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  font-style: italic;
+}
+
+/* Settings — Pinboard manager (b02-11) */
+.lens-settings-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  color: var(--fg);
+}
+.lens-settings-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.lens-settings-pin-manager {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+}
+
+.lens-settings-pin-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lens-settings-pin-row {
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  background: var(--surface);
+}
+
+.lens-settings-pin-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: 0;
+  color: var(--fg-muted);
+  cursor: grab;
+}
+.lens-settings-pin-handle:active {
+  cursor: grabbing;
+}
+
+.lens-settings-pin-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--fg);
+}
+
+.lens-settings-pin-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.lens-settings-pin-label {
+  font-size: var(--text-sm);
+  color: var(--fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lens-settings-pin-url {
+  font-size: var(--text-xxs);
+  color: var(--fg-muted);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lens-settings-pin-actions {
+  display: inline-flex;
+  gap: var(--sp-1);
+}
+
+.lens-settings-pin-iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.lens-settings-pin-iconbtn:hover {
+  background: var(--surface-muted);
+  color: var(--fg);
+}
+.lens-settings-pin-iconbtn--danger:hover {
+  color: var(--accent);
+}
+
+.lens-settings-pin-add {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-1) var(--sp-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  color: var(--fg);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+.lens-settings-pin-add:hover {
+  background: var(--surface-muted);
+}
+
+/* Numeric percentage readout (font-scale) */
+.lens-settings-pct {
+  min-width: 56px;
+  text-align: right;
+}
+
+/* Workspace icon swatch button (square) */
+.lens-settings-ws-icon-btn {
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* Workspace icon picker row (full-width below the workspace row) */
+.lens-settings-ws-icon-picker-row {
+  grid-column: 1 / -1;
+  padding-top: var(--sp-2);
+}
+
+/* Hidden file input (import) */
+.lens-settings-file-hidden {
+  display: none;
+}
+
+/* Import/export status message — color comes from data-kind */
+.lens-settings-msg[data-kind="err"] { color: var(--accent-solid); }
+.lens-settings-msg[data-kind="ok"]  { color: var(--fg-muted); }
+
+/* =========================================================
+   Plugin drop targets — per-row outline + reconnect pill.
+   Tiles mount `<PluginRowDropTarget>` around each row (Trello
+   card, Calendar event, all-day chip). The strong outline
+   appears only on the single row the cursor is over.
+   ========================================================= */
+/* Per-row / per-event drop target — wrapped around the row's natural element
+   (Trello card row, calendar event div, allday chip). Strong outline appears
+   only when the cursor is over the row; same shape on every tile.
+   IMPORTANT: NEVER declare `position` here (any value). The wrapper class is
+   composed with the wrapped element's class (e.g. `lens-cal-today-event` is
+   `position: absolute`), and at equal specificity the later rule wins. A
+   blanket `position: relative` here clobbers the absolute positioning,
+   collapsing calendar chips into flow on drag start. `outline` paints inside
+   the element box (offset: -1px) so it doesn't need stacking context — the
+   wrapped element's own positioning + paint order is sufficient. */
+.lens-plugin-row-drop {
+  transition: outline-color 120ms ease;
+}
+/* Apply the outline to the wrapper itself AND to its first-element-child.
+   Some wrapped rows (calendar events) ARE the styled element; others (Trello
+   cards) are containers around a child whose own background covers the
+   wrapper outline. The child-selector rule paints the outline on the visible
+   element regardless of structure. */
+.lens-plugin-row-drop[data-over="true"],
+.lens-plugin-row-drop[data-over="true"] > :first-child {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+/* Note-buffer drag handle (b02-09) — small grip icon at the top-right of the
+   editor that initiates `note-like` drag without conflicting with textarea
+   text selection. Hidden when the editor has nothing to drag. */
+.lens-scratchpad-editor {
+  position: relative;
+}
+.lens-scratchpad-drag-handle {
+  position: absolute;
+  top: var(--sp-1);
+  right: var(--sp-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--fg-muted);
+  cursor: grab;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+  z-index: 1;
+}
+.lens-scratchpad-drag-handle:hover {
+  background: var(--surface-alt);
+  border-color: var(--border);
+  color: var(--fg);
+}
+.lens-scratchpad-drag-handle[data-dragging="true"] {
+  cursor: grabbing;
+  background: color-mix(in oklab, var(--accent) 18%, var(--surface));
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+/* Tag chips on calendar events — derived from leading `[name]` prefixes in
+   the event description, written by the `tag-like` Calendar adapter. */
+.lens-cal-event-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  margin-top: var(--sp-1);
+}
+.lens-cal-event-tag {
+  display: inline-block;
+  padding: 0 var(--sp-1);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  letter-spacing: 0.04em;
+  background: color-mix(in oklab, var(--accent) 18%, var(--surface));
+  color: var(--accent);
+  border: 1px solid color-mix(in oklab, var(--accent) 32%, transparent);
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lens-cal-allday-chip .lens-cal-event-tag {
+  margin-right: var(--sp-1);
+  vertical-align: middle;
+}
+.lens-plugin-failure-pill {
+  position: absolute;
+  bottom: var(--sp-2);
+  right: var(--sp-2);
+  padding: 3px var(--sp-2);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--r-full);
+  background: var(--surface);
+  color: var(--accent-solid);
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.lens-plugin-failure-pill:hover {
+  background: var(--accent-soft);
+}
+
+
+
+/* =========================================================
+   b02-06 — selection clips (clip-like payload kind)
+   Shared visual treatment for opted-in source rows; click target
+   reset; in-row "scratchpad" pill on already-clipped items.
+   ========================================================= */
+.lens-clip-target {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: inherit;
+}
+
+/* Source-tile rows opt in by setting data-clipped="true" on the wrapper.
+   Trello card chrome: wrapper is the .lens-trello-card div. */
+.lens-trello-card[data-clipped="true"],
+.lens-tasks-item[data-clipped="true"] {
+  background: var(--clipped-bg);
+  border-color: var(--clipped-border);
+}
+.lens-sheets-range-td[data-clipped="true"] {
+  background: var(--clipped-bg);
+  outline: 1px solid var(--clipped-border);
+  outline-offset: -1px;
+}
+.lens-sheets-range-cell-btn {
+  display: block;
+  width: 100%;
+  text-align: inherit;
+}
+
+/* Calendar event chips ARE the clip target (button). The chip already
+   carries its event-color tint as a background — emphasis comes from a
+   solid accent ring inside the radius rather than re-tinting the surface. */
+.lens-cal-today-event[data-clipped="true"],
+.lens-cal-allday-chip[data-clipped="true"] {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* =========================================================
+   b02-15 — auth surfaces (Trello callback, user menu, connections)
+   Sign-in splash styles live in app/(auth)/{auth,login}.css.
+   ========================================================= */
+
+/* Trello callback transitional page. */
+.lens-trello-callback {
+  padding: var(--sp-7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--fg);
+}
+.lens-trello-callback__reason {
+  color: var(--fg-muted);
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+}
+
+/* Dock user menu. */
+.lens-dock-user {
+  position: relative;
+}
+.lens-dock-user__avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-full);
+  object-fit: cover;
+}
+.lens-dock-user__menu {
+  position: absolute;
+  left: calc(100% + var(--sp-2));
+  bottom: 0;
+  min-width: 180px;
+  padding: var(--sp-2);
+  background: var(--surface-raised, var(--surface-alt));
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-card);
+  z-index: 20;
+}
+.lens-dock-user__name {
+  font-size: var(--text-xxs);
+  color: var(--fg-muted);
+  margin: 0 0 var(--sp-1);
+  padding: 0 var(--sp-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lens-dock-user__menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-1) var(--sp-2);
+  background: transparent;
+  border: none;
+  color: var(--fg);
+  font-size: var(--text-xs);
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+}
+.lens-dock-user__menu-item:hover {
+  background: var(--surface-muted);
+}
+
+/* Settings — Connections. */
+.lens-settings-connections {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.lens-settings-connections__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  /* chrome (bg/border/radius) provided by .lens-settings-card */
+}
+.lens-settings-connections__row-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lens-settings-connections__row-label {
+  font-weight: 600;
+  font-size: var(--text-sm);
+}
+.lens-settings-connections__row-desc {
+  color: var(--fg-muted);
+  font-size: var(--text-xs);
+}
+.lens-settings-connections__row-expiry {
+  color: var(--fg-muted);
+  font-size: var(--text-xxs);
+  font-family: var(--font-mono);
+}
+.lens-settings-connections__row-actions {
+  display: flex;
+  gap: var(--sp-2);
+}
+.lens-settings-button {
+  padding: 6px var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--fg);
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+.lens-settings-button:hover {
+  background: var(--surface-alt);
+}
+.lens-settings-button--ghost {
+  background: transparent;
+}
+

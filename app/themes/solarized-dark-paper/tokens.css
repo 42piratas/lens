@@ -1,0 +1,112 @@
+/* ============================================================
+   Solarized Dark Paper — paper-on-dark variant of Solarized Dark.
+
+   Tokens ONLY — no rules. The shared `_paper-pattern.css` provides
+   all the chrome-cascade / multi-card-body / header-text / sidebar-icon /
+   media-merge structural rules; it fires because the manifest declares
+   `mode: "dark-paper"` (bootstrap sets data-theme-mode accordingly).
+
+   Strictly within Solarized's canonical 16-color palette
+   (base03..base3 + yellow/orange/red/magenta/violet/blue/cyan/green).
+   Schoonover's "selective contrast" means the same accent reads at
+   near-identical contrast on base03 (dark) and base3 (light) — so
+   the accent / OKR / chart / label palettes stay identical across the
+   canvas and paper contexts (no need to redeclare inside cards).
+
+   Visual layering:
+     canvas    = base03 (#002b36)  — deepest dark
+     sidebar   = base02 (#073642)  — slightly raised dark
+     header    = base02            — dark strip on each card
+     body      = base3  (#fdf6e3)  — paper
+     inner row = base2  (#eee8d5)  — slightly muted paper (layered)
+   ============================================================ */
+[data-theme="solarized-dark-paper"] {
+  /* ----- Base tokens (dark stage — canvas + sidebar + tile header) ----- */
+
+  /* Surface */
+  --surface: #002b36;        /* base03 */
+  --surface-alt: #073642;    /* base02 — sidebar */
+  --surface-muted: #073642;  /* base02 — tile header (read inside cards too) */
+  --surface-raised: #073642; /* base02 — tile chrome bg behind body */
+  --border: #073642;
+
+  /* Foreground — base1/base0 on dark surfaces */
+  --fg: #93a1a1;             /* base1 */
+  --fg-2: #839496;           /* base0 */
+  --fg-muted: #657b83;       /* base00 */
+  --fg-disabled: #586e75;    /* base01 */
+
+  /* Accent — Solarized blue (selective contrast: same on dark + light) */
+  --accent: #268bd2;
+  --accent-hover: #2aa198;
+  --accent-solid: #268bd2;
+  --accent-solid-hover: #2aa198;
+  --accent-soft: rgba(38, 139, 210, 0.14);
+  --accent-border: rgba(38, 139, 210, 0.34);
+  --accent-focus: #2aa198;
+  --accent-on: #fdf6e3;      /* base3 — text on solid accent (outer chrome ctx) */
+
+  --link: #2aa198;           /* cyan */
+  --link-hover: #93a1a1;
+
+  /* OKR palette — Solarized accents (shared across dark + paper contexts) */
+  --okr-1: #cb4b16; /* orange */
+  --okr-1-soft: rgba(203, 75, 22, 0.14);
+  --okr-1-border: rgba(203, 75, 22, 0.34);
+  --okr-1-ink: #cb4b16;
+
+  --okr-2: #859900; /* green */
+  --okr-2-soft: rgba(133, 153, 0, 0.14);
+  --okr-2-border: rgba(133, 153, 0, 0.34);
+  --okr-2-ink: #859900;
+
+  --okr-3: #268bd2; /* blue */
+  --okr-3-soft: rgba(38, 139, 210, 0.14);
+  --okr-3-border: rgba(38, 139, 210, 0.34);
+  --okr-3-ink: #268bd2;
+
+  --okr-4: #6c71c4; /* violet */
+  --okr-4-soft: rgba(108, 113, 196, 0.14);
+  --okr-4-border: rgba(108, 113, 196, 0.34);
+  --okr-4-ink: #6c71c4;
+
+  /* Chart palette */
+  --chart-1: #268bd2;
+  --chart-2: #859900;
+  --chart-3: #cb4b16;
+  --chart-4: #6c71c4;
+  --chart-5: #2aa198;
+  --chart-6: #b58900;
+  --chart-grid: #073642;
+  --chart-axis: #657b83;
+
+  /* Label palette */
+  --label-green: #859900;
+  --label-yellow: #b58900;
+  --label-orange: #cb4b16;
+  --label-red: #dc322f;
+  --label-purple: #6c71c4;
+  --label-blue: #268bd2;
+  --label-sky: #2aa198;
+  --label-lime: #859900;
+  --label-pink: #d33682;
+  --label-black: #586e75; /* base01 — readable on both ends */
+  --label-gray: #657b83;  /* base00 */
+
+  /* Shadow — heavier on the dark canvas (used by elements outside cards). */
+  --shadow-card: 0 6px 16px -6px rgb(0 0 0 / 0.55), 0 2px 4px -2px rgb(0 0 0 / 0.35);
+
+  /* ----- Paper-layer tokens (consumed by _paper-pattern.css) ----- */
+
+  --paper-surface: #fdf6e3;        /* base3 — primary paper */
+  --paper-surface-muted: #eee8d5;  /* base2 — multi-card tile body */
+  --paper-fg: #073642;             /* base02 — strong body text on paper */
+  --paper-fg-2: #657b83;           /* base00 — secondary text on paper */
+  --paper-fg-muted: #93a1a1;       /* base1  — muted mid-tone, readable on paper */
+  --paper-border: #eee8d5;         /* base2  — border on paper elements */
+  --paper-shadow: 0 2px 6px -2px rgb(0 0 0 / 0.18), 0 1px 2px -1px rgb(0 0 0 / 0.12);
+  --paper-accent-on: #fdf6e3;      /* base3 — text on solid accent inside cards */
+
+  --header-fg: #eee8d5;            /* base2 — text on dark header / macro day strip */
+  --sidebar-icon: #eee8d5;         /* base2 — sidebar icon color */
+}

@@ -1,0 +1,42 @@
+{
+  "name": "create-lens",
+  "version": "0.1.0",
+  "description": "Installer for LENS — clones the repo and runs pnpm install. No configuration; follow the setup tutorial after install.",
+  "keywords": [
+    "lens",
+    "lensboard",
+    "personal-pms",
+    "bento",
+    "dashboard",
+    "create"
+  ],
+  "homepage": "https://github.com/42piratas/lens#readme",
+  "bugs": "https://github.com/42piratas/lens/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/42piratas/lens.git",
+    "directory": "tools/create-lens"
+  },
+  "license": "AGPL-3.0-or-later",
+  "author": "42piratas",
+  "type": "module",
+  "bin": {
+    "create-lens": "./bin/create-lens.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/preflight.test.js test/resolve-dir.test.js test/e2e.test.js"
+  },
+  "dependencies": {
+    "execa": "^9.5.0",
+    "picocolors": "^1.1.0"
+  }
+}

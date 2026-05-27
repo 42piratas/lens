@@ -1,0 +1,58 @@
+name: installer-cli
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: installer-cli-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: tools/create-lens
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect installer-cli changes
+        id: changes
+        working-directory: .
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          else
+            CHANGED=$(git diff --name-only HEAD~1)
+          fi
+          if echo "$CHANGED" | grep -qE '^(tools/create-lens/|\.github/workflows/installer-cli\.yml)'; then
+            echo "run=true" >> $GITHUB_OUTPUT
+          else
+            echo "run=false" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: pnpm/action-setup@v4
+        if: steps.changes.outputs.run == 'true'
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        if: steps.changes.outputs.run == 'true'
+        with:
+          node-version: '20'
+
+      - name: Install
+        if: steps.changes.outputs.run == 'true'
+        run: npm install --no-audit --no-fund
+
+      - name: Test
+        if: steps.changes.outputs.run == 'true'
+        run: npm test

@@ -1,0 +1,78 @@
+/* ============================================================
+   GitHub Light — mirrored from GitHub Primer light theme.
+   Source: https://github.com/primer/primitives
+   ============================================================ */
+[data-theme="github-light"] {
+  /* Surface */
+  --surface: #ffffff;       /* canvas-default */
+  --surface-alt: #f6f8fa;   /* canvas-subtle */
+  --surface-muted: #eaeef2; /* neutral-muted */
+  --surface-raised: #ffffff;
+  --border: #d0d7de;        /* border-default */
+
+  /* Foreground */
+  --fg: #1f2328;          /* fg-default */
+  --fg-2: #424a53;        /* fg-emphasis */
+  --fg-muted: #656d76;    /* fg-muted */
+  --fg-disabled: #8c959f; /* fg-subtle */
+
+  /* Accent — Primer blue */
+  --accent: #0969da;
+  --accent-hover: #0550ae;
+  --accent-solid: #0969da;
+  --accent-solid-hover: #0550ae;
+  --accent-soft: rgba(9, 105, 218, 0.08);
+  --accent-border: rgba(9, 105, 218, 0.30);
+  --accent-focus: #0969da;
+  --accent-on: #ffffff;
+
+  --link: #0969da;
+  --link-hover: #0550ae;
+
+  /* OKR palette */
+  --okr-1: #bc4c00; /* attention orange */
+  --okr-1-soft: rgba(188, 76, 0, 0.10);
+  --okr-1-border: rgba(188, 76, 0, 0.30);
+  --okr-1-ink: #bc4c00;
+
+  --okr-2: #1a7f37; /* success green */
+  --okr-2-soft: rgba(26, 127, 55, 0.10);
+  --okr-2-border: rgba(26, 127, 55, 0.30);
+  --okr-2-ink: #1a7f37;
+
+  --okr-3: #0969da; /* accent blue */
+  --okr-3-soft: rgba(9, 105, 218, 0.10);
+  --okr-3-border: rgba(9, 105, 218, 0.30);
+  --okr-3-ink: #0969da;
+
+  --okr-4: #8250df; /* purple */
+  --okr-4-soft: rgba(130, 80, 223, 0.10);
+  --okr-4-border: rgba(130, 80, 223, 0.30);
+  --okr-4-ink: #8250df;
+
+  /* Chart palette */
+  --chart-1: #0969da;
+  --chart-2: #1a7f37;
+  --chart-3: #bc4c00;
+  --chart-4: #8250df;
+  --chart-5: #1f883d;
+  --chart-6: #cf222e;
+  --chart-grid: #d0d7de;
+  --chart-axis: #656d76;
+
+  /* Label palette */
+  --label-green: #1a7f37;
+  --label-yellow: #9a6700;
+  --label-orange: #bc4c00;
+  --label-red: #cf222e;
+  --label-purple: #8250df;
+  --label-blue: #0969da;
+  --label-sky: #218bff;
+  --label-lime: #1a7f37;
+  --label-pink: #bf3989;
+  --label-black: #1f2328;
+  --label-gray: #656d76;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.08);
+}

@@ -1,0 +1,78 @@
+/* ============================================================
+   Ayu Light — mirrored from dempfi/ayu (Light variant).
+   Source: https://github.com/dempfi/ayu
+   ============================================================ */
+[data-theme="ayu-light"] {
+  /* Surface */
+  --surface: #fafafa;       /* editor.background */
+  --surface-alt: #f3f4f5;
+  --surface-muted: #f0eee4; /* selection */
+  --surface-raised: #ffffff;
+  --border: #e7e8e9;
+
+  /* Foreground */
+  --fg: #5c6166;          /* common.fg */
+  --fg-2: #8a9199;        /* ui.fg */
+  --fg-muted: #abb0b6;    /* syntax.comment */
+  --fg-disabled: #c7cad1;
+
+  /* Accent — Ayu signature orange */
+  --accent: #ff9940;
+  --accent-hover: #f07171;
+  --accent-solid: #ff9940;
+  --accent-solid-hover: #f07171;
+  --accent-soft: rgba(255, 153, 64, 0.12);
+  --accent-border: rgba(255, 153, 64, 0.32);
+  --accent-focus: #ff9940;
+  --accent-on: #fafafa;
+
+  --link: #399ee6;
+  --link-hover: #478acc;
+
+  /* OKR palette */
+  --okr-1: #ff9940; /* orange */
+  --okr-1-soft: rgba(255, 153, 64, 0.12);
+  --okr-1-border: rgba(255, 153, 64, 0.32);
+  --okr-1-ink: #ff9940;
+
+  --okr-2: #86b300; /* green */
+  --okr-2-soft: rgba(134, 179, 0, 0.12);
+  --okr-2-border: rgba(134, 179, 0, 0.32);
+  --okr-2-ink: #86b300;
+
+  --okr-3: #399ee6; /* blue */
+  --okr-3-soft: rgba(57, 158, 230, 0.12);
+  --okr-3-border: rgba(57, 158, 230, 0.32);
+  --okr-3-ink: #399ee6;
+
+  --okr-4: #a37acc; /* purple */
+  --okr-4-soft: rgba(163, 122, 204, 0.12);
+  --okr-4-border: rgba(163, 122, 204, 0.32);
+  --okr-4-ink: #a37acc;
+
+  /* Chart palette */
+  --chart-1: #ff9940;
+  --chart-2: #86b300;
+  --chart-3: #399ee6;
+  --chart-4: #a37acc;
+  --chart-5: #4cbf99;
+  --chart-6: #f07171;
+  --chart-grid: #e7e8e9;
+  --chart-axis: #828c99;
+
+  /* Label palette */
+  --label-green: #86b300;
+  --label-yellow: #f2ae49;
+  --label-orange: #ff9940;
+  --label-red: #f07171;
+  --label-purple: #a37acc;
+  --label-blue: #399ee6;
+  --label-sky: #4cbf99;
+  --label-lime: #86b300;
+  --label-pink: #f07178;
+  --label-black: #5c6166;
+  --label-gray: #828c99;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.08);
+}

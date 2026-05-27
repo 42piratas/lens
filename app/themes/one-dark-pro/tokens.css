@@ -1,0 +1,78 @@
+/* ============================================================
+   One Dark Pro — mirrored from Atom One Dark legacy palette.
+   Source: https://github.com/Binaryify/OneDark-Pro
+   ============================================================ */
+[data-theme="one-dark-pro"] {
+  /* Surface */
+  --surface: #282c34;       /* editor.background */
+  --surface-alt: #21252b;
+  --surface-muted: #2c313a;
+  --surface-raised: #3e4451; /* selection */
+  --border: #3e4451;
+
+  /* Foreground */
+  --fg: #abb2bf;          /* editor.foreground */
+  --fg-2: #c8ced3;
+  --fg-muted: #5c6370;    /* comment */
+  --fg-disabled: #4b5263;
+
+  /* Accent — Blue */
+  --accent: #61afef;
+  --accent-hover: #56b6c2;
+  --accent-solid: #61afef;
+  --accent-solid-hover: #56b6c2;
+  --accent-soft: rgba(97, 175, 239, 0.12);
+  --accent-border: rgba(97, 175, 239, 0.32);
+  --accent-focus: #61afef;
+  --accent-on: #282c34;
+
+  --link: #56b6c2;
+  --link-hover: #61afef;
+
+  /* OKR palette */
+  --okr-1: #d19a66; /* orange */
+  --okr-1-soft: rgba(209, 154, 102, 0.12);
+  --okr-1-border: rgba(209, 154, 102, 0.32);
+  --okr-1-ink: #d19a66;
+
+  --okr-2: #98c379; /* green */
+  --okr-2-soft: rgba(152, 195, 121, 0.12);
+  --okr-2-border: rgba(152, 195, 121, 0.32);
+  --okr-2-ink: #98c379;
+
+  --okr-3: #61afef; /* blue */
+  --okr-3-soft: rgba(97, 175, 239, 0.12);
+  --okr-3-border: rgba(97, 175, 239, 0.32);
+  --okr-3-ink: #61afef;
+
+  --okr-4: #c678dd; /* magenta */
+  --okr-4-soft: rgba(198, 120, 221, 0.12);
+  --okr-4-border: rgba(198, 120, 221, 0.32);
+  --okr-4-ink: #c678dd;
+
+  /* Chart palette */
+  --chart-1: #61afef;
+  --chart-2: #98c379;
+  --chart-3: #d19a66;
+  --chart-4: #c678dd;
+  --chart-5: #56b6c2;
+  --chart-6: #e06c75;
+  --chart-grid: #3e4451;
+  --chart-axis: #5c6370;
+
+  /* Label palette */
+  --label-green: #98c379;
+  --label-yellow: #e5c07b;
+  --label-orange: #d19a66;
+  --label-red: #e06c75;
+  --label-purple: #c678dd;
+  --label-blue: #61afef;
+  --label-sky: #56b6c2;
+  --label-lime: #98c379;
+  --label-pink: #c678dd;
+  --label-black: #abb2bf;
+  --label-gray: #5c6370;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.5);
+}

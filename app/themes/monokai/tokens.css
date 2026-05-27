@@ -1,0 +1,80 @@
+/* ============================================================
+   Monokai — mirrored from the original by Wimer Hazenberg.
+   Source: https://monokai.pro
+   ============================================================ */
+[data-theme="monokai"] {
+  /* Surface */
+  --surface: #272822;        /* canonical background */
+  --surface-alt: #1e1f1c;
+  --surface-muted: #3e3d32;  /* selection / line highlight */
+  --surface-raised: #34352f;
+  --border: #49483e;
+
+  /* Foreground */
+  --fg: #f8f8f2;             /* canonical foreground */
+  --fg-2: #cfcfc2;
+  --fg-muted: #75715e;       /* canonical comment */
+  --fg-disabled: #49483e;
+
+  /* Accent — Pink (canonical Monokai keyword/operator).
+     Hover transitions to canonical purple #ae81ff — the pink↔purple
+     pairing is a Monokai signature (keyword → constant). */
+  --accent: #f92672;
+  --accent-hover: #ae81ff;
+  --accent-solid: #f92672;
+  --accent-solid-hover: #ae81ff;
+  --accent-soft: rgba(249, 38, 114, 0.14);
+  --accent-border: rgba(249, 38, 114, 0.34);
+  --accent-focus: #f92672;
+  --accent-on: #272822;
+
+  --link: #66d9ef;           /* cyan */
+  --link-hover: #a6e22e;     /* green */
+
+  /* OKR palette */
+  --okr-1: #fd971f;          /* orange */
+  --okr-1-soft: rgba(253, 151, 31, 0.14);
+  --okr-1-border: rgba(253, 151, 31, 0.34);
+  --okr-1-ink: #fd971f;
+
+  --okr-2: #a6e22e;          /* green */
+  --okr-2-soft: rgba(166, 226, 46, 0.14);
+  --okr-2-border: rgba(166, 226, 46, 0.34);
+  --okr-2-ink: #a6e22e;
+
+  --okr-3: #66d9ef;          /* cyan */
+  --okr-3-soft: rgba(102, 217, 239, 0.14);
+  --okr-3-border: rgba(102, 217, 239, 0.34);
+  --okr-3-ink: #66d9ef;
+
+  --okr-4: #ae81ff;          /* purple */
+  --okr-4-soft: rgba(174, 129, 255, 0.14);
+  --okr-4-border: rgba(174, 129, 255, 0.34);
+  --okr-4-ink: #ae81ff;
+
+  /* Chart palette */
+  --chart-1: #f92672;
+  --chart-2: #a6e22e;
+  --chart-3: #fd971f;
+  --chart-4: #66d9ef;
+  --chart-5: #ae81ff;
+  --chart-6: #e6db74;
+  --chart-grid: #49483e;
+  --chart-axis: #75715e;
+
+  /* Label palette */
+  --label-green: #a6e22e;
+  --label-yellow: #e6db74;
+  --label-orange: #fd971f;
+  --label-red: #f92672;
+  --label-purple: #ae81ff;
+  --label-blue: #66d9ef;
+  --label-sky: #66d9ef;
+  --label-lime: #a6e22e;
+  --label-pink: #f92672;
+  --label-black: #f8f8f2;
+  --label-gray: #75715e;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.5);
+}

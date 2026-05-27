@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/42piratas/lens/blob/main/docs/development.md
+    about: Setup, env vars, dev workflow, and per-connector OAuth notes.
+  - name: Architecture
+    url: https://github.com/42piratas/lens/blob/main/docs/architecture.md
+    about: Five modular surfaces — connectors, tiles, themes, workspaces, plugins.
+  - name: Contributing
+    url: https://github.com/42piratas/lens/blob/main/CONTRIBUTING.md
+    about: Branching, PR workflow, CI gates, surface cookbooks.
+  - name: Wiki
+    url: https://github.com/42piratas/lens/wiki
+    about: Long-form guides and tutorials (coming soon).
+  - name: Security disclosure
+    url: https://github.com/42piratas/lens/security/advisories/new
+    about: Report a security vulnerability privately. See SECURITY.md for the full policy.

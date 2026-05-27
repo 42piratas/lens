@@ -1,0 +1,111 @@
+/* ============================================================
+   Dracula Paper — paper-on-dark variant of Dracula.
+
+   Tokens ONLY — no rules. The shared `_paper-pattern.css` provides
+   all the chrome-cascade / multi-card-body / header-text / sidebar-icon /
+   media-merge structural rules; it fires because the manifest declares
+   `mode: "dark-paper"` (bootstrap sets data-theme-mode accordingly).
+
+   Dracula doesn't ship canonical light-end tones, so the paper layer
+   uses Dracula's Foreground (#f8f8f2) as primary paper + Background
+   (#282a36) as ink, with one lavender-tinted muted-paper tone for
+   multi-card containers (keeps the Dracula purple atmosphere on the
+   paper side without leaving the palette spirit).
+
+   Visual layering:
+     canvas    = #282a36 (Background)  — deepest dark
+     sidebar   = #21222c (Background alt) — slightly raised dark
+     header    = #44475a (Current line) — dark strip on each card
+     body      = #f8f8f2 (Foreground)  — primary paper
+     muted bg  = #d8d6e0 (lavender)    — multi-card tile body
+   ============================================================ */
+[data-theme="dracula-paper"] {
+  /* ----- Base tokens (dark stage — canvas + sidebar + tile header) ----- */
+
+  /* Surface */
+  --surface: #282a36;        /* Background */
+  --surface-alt: #21222c;    /* Background alt */
+  --surface-muted: #44475a;  /* Current line — dark header strip */
+  --surface-raised: #44475a;
+  --border: #44475a;
+
+  /* Foreground */
+  --fg: #f8f8f2;           /* Foreground */
+  --fg-2: #e0e0e0;
+  --fg-muted: #6272a4;     /* Comment */
+  --fg-disabled: #44475a;
+
+  /* Accent — Pink */
+  --accent: #ff79c6;
+  --accent-hover: #bd93f9;
+  --accent-solid: #ff79c6;
+  --accent-solid-hover: #bd93f9;
+  --accent-soft: rgba(255, 121, 198, 0.12);
+  --accent-border: rgba(255, 121, 198, 0.32);
+  --accent-focus: #ff79c6;
+  --accent-on: #282a36;
+
+  --link: #8be9fd;
+  --link-hover: #50fa7b;
+
+  /* OKR palette — Dracula accents (shared across dark + paper contexts) */
+  --okr-1: #ffb86c; /* orange */
+  --okr-1-soft: rgba(255, 184, 108, 0.12);
+  --okr-1-border: rgba(255, 184, 108, 0.32);
+  --okr-1-ink: #ffb86c;
+
+  --okr-2: #50fa7b; /* green */
+  --okr-2-soft: rgba(80, 250, 123, 0.12);
+  --okr-2-border: rgba(80, 250, 123, 0.32);
+  --okr-2-ink: #50fa7b;
+
+  --okr-3: #8be9fd; /* cyan */
+  --okr-3-soft: rgba(139, 233, 253, 0.12);
+  --okr-3-border: rgba(139, 233, 253, 0.32);
+  --okr-3-ink: #8be9fd;
+
+  --okr-4: #bd93f9; /* purple */
+  --okr-4-soft: rgba(189, 147, 249, 0.12);
+  --okr-4-border: rgba(189, 147, 249, 0.32);
+  --okr-4-ink: #bd93f9;
+
+  /* Chart palette */
+  --chart-1: #ff79c6;
+  --chart-2: #50fa7b;
+  --chart-3: #ffb86c;
+  --chart-4: #bd93f9;
+  --chart-5: #8be9fd;
+  --chart-6: #f1fa8c;
+  --chart-grid: #44475a;
+  --chart-axis: #6272a4;
+
+  /* Label palette */
+  --label-green: #50fa7b;
+  --label-yellow: #f1fa8c;
+  --label-orange: #ffb86c;
+  --label-red: #ff5555;
+  --label-purple: #bd93f9;
+  --label-blue: #8be9fd;
+  --label-sky: #8be9fd;
+  --label-lime: #50fa7b;
+  --label-pink: #ff79c6;
+  --label-black: #f8f8f2;
+  --label-gray: #6272a4;
+
+  /* Shadow — heavier on the dark canvas (used by elements outside cards). */
+  --shadow-card: 0 6px 16px -6px rgb(0 0 0 / 0.55), 0 2px 4px -2px rgb(0 0 0 / 0.35);
+
+  /* ----- Paper-layer tokens (consumed by _paper-pattern.css) ----- */
+
+  --paper-surface: #f8f8f2;        /* Dracula Foreground — primary paper */
+  --paper-surface-muted: #d8d6e0;  /* lavender-tinted muted paper (multi-card body) */
+  --paper-fg: #282a36;             /* Dracula Background — ink on paper */
+  --paper-fg-2: #44475a;           /* Current line — secondary text on paper */
+  --paper-fg-muted: #6272a4;       /* Dracula Comment — muted text on paper */
+  --paper-border: #c8c5d0;         /* lavender-tinted border on paper */
+  --paper-shadow: 0 2px 6px -2px rgb(0 0 0 / 0.22), 0 1px 2px -1px rgb(0 0 0 / 0.14);
+  --paper-accent-on: #282a36;      /* dark text on pink accent inside paper card */
+
+  --header-fg: #f8f8f2;            /* Dracula Foreground on dark header strip */
+  --sidebar-icon: #f8f8f2;
+}

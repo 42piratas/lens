@@ -1,0 +1,78 @@
+/* ============================================================
+   Nord — mirrored from Arctic Ice Studio's Nord palette.
+   Source: https://www.nordtheme.com
+   ============================================================ */
+[data-theme="nord"] {
+  /* Surface — Polar Night */
+  --surface: #2e3440;     /* nord0 */
+  --surface-alt: #3b4252; /* nord1 */
+  --surface-muted: #434c5e; /* nord2 */
+  --surface-raised: #4c566a; /* nord3 */
+  --border: #434c5e;
+
+  /* Foreground — Snow Storm */
+  --fg: #eceff4;       /* nord6 */
+  --fg-2: #e5e9f0;     /* nord5 */
+  --fg-muted: #d8dee9; /* nord4 */
+  --fg-disabled: #4c566a;
+
+  /* Accent — Frost */
+  --accent: #88c0d0;       /* nord8 */
+  --accent-hover: #8fbcbb; /* nord7 */
+  --accent-solid: #88c0d0;
+  --accent-solid-hover: #8fbcbb;
+  --accent-soft: rgba(136, 192, 208, 0.12);
+  --accent-border: rgba(136, 192, 208, 0.32);
+  --accent-focus: #88c0d0;
+  --accent-on: #2e3440;
+
+  --link: #81a1c1;
+  --link-hover: #88c0d0;
+
+  /* OKR palette — Aurora */
+  --okr-1: #d08770; /* nord12 orange */
+  --okr-1-soft: rgba(208, 135, 112, 0.12);
+  --okr-1-border: rgba(208, 135, 112, 0.32);
+  --okr-1-ink: #d08770;
+
+  --okr-2: #a3be8c; /* nord14 green */
+  --okr-2-soft: rgba(163, 190, 140, 0.12);
+  --okr-2-border: rgba(163, 190, 140, 0.32);
+  --okr-2-ink: #a3be8c;
+
+  --okr-3: #5e81ac; /* nord10 blue */
+  --okr-3-soft: rgba(94, 129, 172, 0.12);
+  --okr-3-border: rgba(94, 129, 172, 0.32);
+  --okr-3-ink: #81a1c1;
+
+  --okr-4: #b48ead; /* nord15 purple */
+  --okr-4-soft: rgba(180, 142, 173, 0.12);
+  --okr-4-border: rgba(180, 142, 173, 0.32);
+  --okr-4-ink: #b48ead;
+
+  /* Chart palette */
+  --chart-1: #88c0d0;
+  --chart-2: #a3be8c;
+  --chart-3: #d08770;
+  --chart-4: #b48ead;
+  --chart-5: #81a1c1;
+  --chart-6: #ebcb8b;
+  --chart-grid: #434c5e;
+  --chart-axis: #d8dee9;
+
+  /* Label palette */
+  --label-green: #a3be8c;
+  --label-yellow: #ebcb8b;
+  --label-orange: #d08770;
+  --label-red: #bf616a;
+  --label-purple: #b48ead;
+  --label-blue: #5e81ac;
+  --label-sky: #88c0d0;
+  --label-lime: #a3be8c;
+  --label-pink: #b48ead;
+  --label-black: #eceff4;
+  --label-gray: #d8dee9;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.4);
+}

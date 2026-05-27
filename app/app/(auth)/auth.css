@@ -1,0 +1,76 @@
+/* =========================================================================
+ * Splash backdrop + drifting "+" pattern.
+ * Adapted from ~/42labs/42agents/commons/splash-login. Forces
+ * `data-theme="dark"` so the splash is always dark; remaps the template's
+ * --color-* names onto LENS DS accent/surface tokens — no separate
+ * splash palette, the splash auto-retints with the active dark theme.
+ * ========================================================================= */
+.auth-backdrop {
+  /* Splash semantic palette — every value resolves through the active
+     LENS theme's DS tokens. With `data-theme="dark"` forced on this
+     wrapper, --accent is mint, surface is void, etc. */
+  --color-background: var(--surface);
+  --color-foreground: var(--fg);
+  --color-card: var(--surface-alt);
+  --color-muted: var(--surface-muted);
+  --color-muted-foreground: var(--fg-muted);
+  --color-border: var(--border);
+  --color-error: var(--label-red);
+
+  /* Primary CTA / interactive accent — routes through DS accent tokens
+     so the splash auto-retints with the active theme. */
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-border: var(--accent-border);
+  --color-accent-on: var(--accent-on);
+
+  --font-sans: var(--font-body);
+
+  color: var(--color-foreground);
+  background: var(--color-background);
+
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* =========================================================================
+ * Drifting "+" pattern (kootoopas/kGPoaB-style).
+ * 50px-tile cross repeats; background-position translates by exactly the
+ * tile size on an infinite linear loop. 7s period gives a calm drift;
+ * opacity tuned for legibility behind the form.
+ * ========================================================================= */
+.auth-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  /* Stroke is the dark-theme accent (mint = #00FFA7) since the splash is
+     dark-only. CSS vars can't live inside a data: URI, so the value is
+     baked here and tracks the LENS dark-theme accent token. */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50'><g stroke='%2300FFA7' stroke-width='1.2' stroke-linecap='round' opacity='0.14'><line x1='25' y1='21.5' x2='25' y2='28.5'/><line x1='21.5' y1='25' x2='28.5' y2='25'/></g></svg>");
+  background-repeat: repeat;
+  opacity: 0;
+  animation:
+    splash-bg-scroll 7s linear infinite,
+    splash-bg-fade-in 1500ms ease-out 4500ms forwards;
+}
+
+@keyframes splash-bg-scroll {
+  from { background-position: 0 0; }
+  to   { background-position: 50px 50px; }
+}
+
+@keyframes splash-bg-fade-in {
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-backdrop::before {
+    animation: splash-bg-fade-in 200ms ease-out 0ms forwards;
+  }
+}

@@ -1,0 +1,78 @@
+/* ============================================================
+   One Light — mirrored from Atom One Light syntax theme.
+   Source: https://github.com/atom/one-light-syntax
+   ============================================================ */
+[data-theme="one-light"] {
+  /* Surface */
+  --surface: #fafafa;       /* background */
+  --surface-alt: #f0f0f1;
+  --surface-muted: #e5e5e6; /* selection */
+  --surface-raised: #ffffff;
+  --border: #e5e5e6;
+
+  /* Foreground */
+  --fg: #383a42;          /* foreground */
+  --fg-2: #494b53;
+  --fg-muted: #a0a1a7;    /* comment */
+  --fg-disabled: #c8ccd4;
+
+  /* Accent — Blue */
+  --accent: #4078f2;
+  --accent-hover: #0184bc;
+  --accent-solid: #4078f2;
+  --accent-solid-hover: #0184bc;
+  --accent-soft: rgba(64, 120, 242, 0.10);
+  --accent-border: rgba(64, 120, 242, 0.30);
+  --accent-focus: #4078f2;
+  --accent-on: #fafafa;
+
+  --link: #4078f2;
+  --link-hover: #0184bc;
+
+  /* OKR palette */
+  --okr-1: #d75f00; /* orange */
+  --okr-1-soft: rgba(215, 95, 0, 0.10);
+  --okr-1-border: rgba(215, 95, 0, 0.30);
+  --okr-1-ink: #d75f00;
+
+  --okr-2: #50a14f; /* green */
+  --okr-2-soft: rgba(80, 161, 79, 0.10);
+  --okr-2-border: rgba(80, 161, 79, 0.30);
+  --okr-2-ink: #50a14f;
+
+  --okr-3: #4078f2; /* blue */
+  --okr-3-soft: rgba(64, 120, 242, 0.10);
+  --okr-3-border: rgba(64, 120, 242, 0.30);
+  --okr-3-ink: #4078f2;
+
+  --okr-4: #a626a4; /* magenta */
+  --okr-4-soft: rgba(166, 38, 164, 0.10);
+  --okr-4-border: rgba(166, 38, 164, 0.30);
+  --okr-4-ink: #a626a4;
+
+  /* Chart palette */
+  --chart-1: #4078f2;
+  --chart-2: #50a14f;
+  --chart-3: #d75f00;
+  --chart-4: #a626a4;
+  --chart-5: #0184bc;
+  --chart-6: #e45649;
+  --chart-grid: #e5e5e6;
+  --chart-axis: #a0a1a7;
+
+  /* Label palette */
+  --label-green: #50a14f;
+  --label-yellow: #c18401;
+  --label-orange: #d75f00;
+  --label-red: #e45649;
+  --label-purple: #a626a4;
+  --label-blue: #4078f2;
+  --label-sky: #0184bc;
+  --label-lime: #50a14f;
+  --label-pink: #a626a4;
+  --label-black: #383a42;
+  --label-gray: #a0a1a7;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.08);
+}

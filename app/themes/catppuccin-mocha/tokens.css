@@ -1,0 +1,78 @@
+/* ============================================================
+   Catppuccin Mocha — mirrored from catppuccin/catppuccin (Mocha flavor).
+   Source: https://catppuccin.com/palette
+   ============================================================ */
+[data-theme="catppuccin-mocha"] {
+  /* Surface */
+  --surface: #1e1e2e;     /* base */
+  --surface-alt: #181825; /* mantle */
+  --surface-muted: #313244; /* surface0 */
+  --surface-raised: #45475a; /* surface1 */
+  --border: #45475a;
+
+  /* Foreground */
+  --fg: #cdd6f4;          /* text */
+  --fg-2: #bac2de;        /* subtext1 */
+  --fg-muted: #9399b2;    /* overlay2 */
+  --fg-disabled: #6c7086; /* overlay0 */
+
+  /* Accent — Mauve */
+  --accent: #cba6f7;
+  --accent-hover: #b4befe;
+  --accent-solid: #cba6f7;
+  --accent-solid-hover: #b4befe;
+  --accent-soft: rgba(203, 166, 247, 0.12);
+  --accent-border: rgba(203, 166, 247, 0.32);
+  --accent-focus: #cba6f7;
+  --accent-on: #1e1e2e;
+
+  --link: #89b4fa;
+  --link-hover: #74c7ec;
+
+  /* OKR palette */
+  --okr-1: #fab387; /* peach */
+  --okr-1-soft: rgba(250, 179, 135, 0.12);
+  --okr-1-border: rgba(250, 179, 135, 0.32);
+  --okr-1-ink: #fab387;
+
+  --okr-2: #a6e3a1; /* green */
+  --okr-2-soft: rgba(166, 227, 161, 0.12);
+  --okr-2-border: rgba(166, 227, 161, 0.32);
+  --okr-2-ink: #a6e3a1;
+
+  --okr-3: #89b4fa; /* blue */
+  --okr-3-soft: rgba(137, 180, 250, 0.12);
+  --okr-3-border: rgba(137, 180, 250, 0.32);
+  --okr-3-ink: #89b4fa;
+
+  --okr-4: #cba6f7; /* mauve */
+  --okr-4-soft: rgba(203, 166, 247, 0.12);
+  --okr-4-border: rgba(203, 166, 247, 0.32);
+  --okr-4-ink: #cba6f7;
+
+  /* Chart palette */
+  --chart-1: #cba6f7;
+  --chart-2: #a6e3a1;
+  --chart-3: #fab387;
+  --chart-4: #89b4fa;
+  --chart-5: #94e2d5;
+  --chart-6: #f38ba8;
+  --chart-grid: #45475a;
+  --chart-axis: #9399b2;
+
+  /* Label palette */
+  --label-green: #a6e3a1;
+  --label-yellow: #f9e2af;
+  --label-orange: #fab387;
+  --label-red: #f38ba8;
+  --label-purple: #cba6f7;
+  --label-blue: #89b4fa;
+  --label-sky: #89dceb;
+  --label-lime: #a6e3a1;
+  --label-pink: #f5c2e7;
+  --label-black: #cdd6f4;
+  --label-gray: #9399b2;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.5);
+}

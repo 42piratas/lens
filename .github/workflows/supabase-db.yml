@@ -1,0 +1,97 @@
+# Supabase migrations
+#
+# v1 model: a single Supabase project serves both PR previews and production.
+# That means any `supabase db push` run from CI applies directly to the
+# production database. To prevent half-baked migrations from landing on prod
+# the moment a PR opens, this workflow is split:
+#
+#   - on pull_request → lint only (no `db push`)
+#   - on push to main (post-merge) → lint + apply
+#   - workflow_dispatch → manual apply (emergency / out-of-band)
+#
+# When a separate `lens-prod` Supabase project is split out (see playbook §1),
+# point main-branch CI at lens-staging and gate the lens-prod apply on a
+# release-tag push or manual dispatch.
+name: supabase-db
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'app/supabase/migrations/**'
+      - 'app/supabase/seed.sql'
+      - '.github/workflows/supabase-db.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'app/supabase/migrations/**'
+      - 'app/supabase/seed.sql'
+      - '.github/workflows/supabase-db.yml'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: 'Apply migrations (defaults to lint-only)'
+        type: boolean
+        default: false
+concurrency:
+  group: supabase-db-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  supabase-db-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute apply flag
+        id: gate
+        run: |
+          # Apply on push to main, or when manually dispatched with apply=true.
+          # On pull_request we never apply — only lint.
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "apply=true" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.apply }}" = "true" ]; then
+            echo "apply=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "apply=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Detect changed files
+        id: changes
+        if: github.event_name == 'pull_request'
+        run: |
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.event.pull_request.head.sha }}"
+          MIGRATIONS=$(git diff --name-only "$BASE" "$HEAD" -- 'app/supabase/migrations/**' | wc -l | tr -d ' ')
+          SEED=$(git diff --name-only "$BASE" "$HEAD" -- 'app/supabase/seed.sql' | wc -l | tr -d ' ')
+          echo "migrations=$MIGRATIONS" >> "$GITHUB_OUTPUT"
+          echo "seed=$SEED" >> "$GITHUB_OUTPUT"
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link Supabase project
+        run: supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_REF }} --workdir app
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+
+      - name: Apply migrations
+        if: steps.gate.outputs.apply == 'true'
+        run: supabase db push --linked --include-all --workdir app
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+
+      - name: Lint database schema
+        run: supabase db lint --linked --fail-on error
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_WORKDIR: app
+
+      - name: Apply seed
+        if: steps.gate.outputs.apply == 'true' && steps.changes.outputs.seed != '0'
+        run: psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f app/supabase/seed.sql
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}

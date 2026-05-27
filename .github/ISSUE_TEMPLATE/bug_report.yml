@@ -1,0 +1,85 @@
+name: Bug report
+description: Something is broken or behaving unexpectedly
+title: "[BUG] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please fill out the fields below — they help us reproduce and fix the issue faster.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Clear description of the actual behavior.
+      placeholder: When I drag a Trello card onto a calendar event, the page reloads instead of attaching the tag.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      description: What should have happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps that lead to the bug. Include the workspace / tile config you were using if relevant.
+      placeholder: |
+        1. Open the dashboard at http://localhost:3000
+        2. Add a Trello kanban-board card
+        3. Drag a card onto a calendar event in the calendar tile
+        4. ...
+    validations:
+      required: true
+  - type: dropdown
+    id: connectors
+    attributes:
+      label: Connector(s) involved
+      description: Which data sources were active when the bug happened?
+      multiple: true
+      options:
+        - Google Calendar
+        - Google Sheets
+        - Google Tasks
+        - Trello
+        - Goodreads
+        - Trakt
+        - Scratchpad
+        - Keep (dormant)
+        - Not connector-related
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: LENS version (commit SHA)
+      description: Run `git rev-parse HEAD` in the lens repo, or check the footer of the deployed app if you have one.
+      placeholder: e.g. 4405ade or v0.1.0
+    validations:
+      required: false
+  - type: input
+    id: browser
+    attributes:
+      label: Browser + OS
+      description: Browser version and operating system.
+      placeholder: Chrome 131 on macOS 15.1
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / video
+      description: Drag images or paste a video URL. Console errors are especially useful.
+    validations:
+      required: false
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Network errors, server logs, related issues, theories.
+    validations:
+      required: false

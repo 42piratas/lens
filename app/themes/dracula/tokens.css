@@ -1,0 +1,78 @@
+/* ============================================================
+   Dracula — mirrored from dracula/dracula-theme by Zeno Rocha.
+   Source: https://draculatheme.com
+   ============================================================ */
+[data-theme="dracula"] {
+  /* Surface */
+  --surface: #282a36;       /* background */
+  --surface-alt: #21222c;
+  --surface-muted: #44475a; /* current line */
+  --surface-raised: #44475a;
+  --border: #44475a;
+
+  /* Foreground */
+  --fg: #f8f8f2;          /* foreground */
+  --fg-2: #e0e0e0;
+  --fg-muted: #6272a4;    /* comment */
+  --fg-disabled: #44475a;
+
+  /* Accent — Pink */
+  --accent: #ff79c6;
+  --accent-hover: #bd93f9;
+  --accent-solid: #ff79c6;
+  --accent-solid-hover: #bd93f9;
+  --accent-soft: rgba(255, 121, 198, 0.12);
+  --accent-border: rgba(255, 121, 198, 0.32);
+  --accent-focus: #ff79c6;
+  --accent-on: #282a36;
+
+  --link: #8be9fd;
+  --link-hover: #50fa7b;
+
+  /* OKR palette */
+  --okr-1: #ffb86c; /* orange */
+  --okr-1-soft: rgba(255, 184, 108, 0.12);
+  --okr-1-border: rgba(255, 184, 108, 0.32);
+  --okr-1-ink: #ffb86c;
+
+  --okr-2: #50fa7b; /* green */
+  --okr-2-soft: rgba(80, 250, 123, 0.12);
+  --okr-2-border: rgba(80, 250, 123, 0.32);
+  --okr-2-ink: #50fa7b;
+
+  --okr-3: #8be9fd; /* cyan */
+  --okr-3-soft: rgba(139, 233, 253, 0.12);
+  --okr-3-border: rgba(139, 233, 253, 0.32);
+  --okr-3-ink: #8be9fd;
+
+  --okr-4: #bd93f9; /* purple */
+  --okr-4-soft: rgba(189, 147, 249, 0.12);
+  --okr-4-border: rgba(189, 147, 249, 0.32);
+  --okr-4-ink: #bd93f9;
+
+  /* Chart palette */
+  --chart-1: #ff79c6;
+  --chart-2: #50fa7b;
+  --chart-3: #ffb86c;
+  --chart-4: #bd93f9;
+  --chart-5: #8be9fd;
+  --chart-6: #f1fa8c;
+  --chart-grid: #44475a;
+  --chart-axis: #6272a4;
+
+  /* Label palette */
+  --label-green: #50fa7b;
+  --label-yellow: #f1fa8c;
+  --label-orange: #ffb86c;
+  --label-red: #ff5555;
+  --label-purple: #bd93f9;
+  --label-blue: #8be9fd;
+  --label-sky: #8be9fd;
+  --label-lime: #50fa7b;
+  --label-pink: #ff79c6;
+  --label-black: #f8f8f2;
+  --label-gray: #6272a4;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.5);
+}

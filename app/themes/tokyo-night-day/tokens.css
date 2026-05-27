@@ -1,0 +1,78 @@
+/* ============================================================
+   Tokyo Night Day — mirrored from enkia/tokyo-night-vscode-theme (Day variant).
+   Source: https://github.com/enkia/tokyo-night-vscode-theme
+   ============================================================ */
+[data-theme="tokyo-night-day"] {
+  /* Surface */
+  --surface: #e1e2e7;
+  --surface-alt: #d0d5e1;
+  --surface-muted: #cbcce0;
+  --surface-raised: #e9e9ec;
+  --border: #a8aecb;
+
+  /* Foreground */
+  --fg: #3760bf;
+  --fg-2: #4f5163;
+  --fg-muted: #848cb5;
+  --fg-disabled: #a8aecb;
+
+  /* Accent — Tokyo Night Day signature blue */
+  --accent: #2e7de9;
+  --accent-hover: #007197;
+  --accent-solid: #2e7de9;
+  --accent-solid-hover: #007197;
+  --accent-soft: rgba(46, 125, 233, 0.10);
+  --accent-border: rgba(46, 125, 233, 0.32);
+  --accent-focus: #2e7de9;
+  --accent-on: #e1e2e7;
+
+  --link: #2e7de9;
+  --link-hover: #007197;
+
+  /* OKR palette */
+  --okr-1: #b15c00;
+  --okr-1-soft: rgba(177, 92, 0, 0.10);
+  --okr-1-border: rgba(177, 92, 0, 0.32);
+  --okr-1-ink: #b15c00;
+
+  --okr-2: #587539;
+  --okr-2-soft: rgba(88, 117, 57, 0.10);
+  --okr-2-border: rgba(88, 117, 57, 0.32);
+  --okr-2-ink: #587539;
+
+  --okr-3: #2e7de9;
+  --okr-3-soft: rgba(46, 125, 233, 0.10);
+  --okr-3-border: rgba(46, 125, 233, 0.32);
+  --okr-3-ink: #2e7de9;
+
+  --okr-4: #7847bd;
+  --okr-4-soft: rgba(120, 71, 189, 0.10);
+  --okr-4-border: rgba(120, 71, 189, 0.32);
+  --okr-4-ink: #7847bd;
+
+  /* Chart palette */
+  --chart-1: #2e7de9;
+  --chart-2: #587539;
+  --chart-3: #b15c00;
+  --chart-4: #7847bd;
+  --chart-5: #007197;
+  --chart-6: #f52a65;
+  --chart-grid: #a8aecb;
+  --chart-axis: #848cb5;
+
+  /* Label palette */
+  --label-green: #587539;
+  --label-yellow: #8c6c3e;
+  --label-orange: #b15c00;
+  --label-red: #f52a65;
+  --label-purple: #9854f1;
+  --label-blue: #2e7de9;
+  --label-sky: #007197;
+  --label-lime: #587539;
+  --label-pink: #d83bb5;
+  --label-black: #3760bf;
+  --label-gray: #848cb5;
+
+  /* Shadow */
+  --shadow-card: 0 1px 2px -1px rgb(0 0 0 / 0.10);
+}
