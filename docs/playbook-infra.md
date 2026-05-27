@@ -28,7 +28,7 @@ When a separate `lens-prod` project is split out, point `main`-branch CI at `len
 
 ### RLS
 
-Row Level Security is enabled on every user-keyed table — landed end-to-end in b02-15 with `next_auth.uid() = user_id` policies on `oauth_tokens`, `layouts`, `scratchpad`, `pending_writes` (plus `users_self_select`/`users_self_update` on `public.users`). Empirical two-account probe at `app/scripts/probe-rls-cross-user.mjs` (run during b02-15 close) confirms cross-user reads return 0 rows and forged-`user_id` INSERTs are blocked at the DB with Postgres `42501`. Vault wrappers (`vault_create/update/read/delete_secret`, all SECURITY DEFINER) own token encryption — vault schema is intentionally NOT exposed via PostgREST; access is service-role-only.
+Row Level Security is enabled on every user-keyed table — `next_auth.uid() = user_id` policies on `oauth_tokens`, `layouts`, `scratchpad`, `pending_writes` (plus `users_self_select`/`users_self_update` on `public.users`). An empirical two-account probe at `app/scripts/probe-rls-cross-user.mjs` confirms cross-user reads return 0 rows and forged-`user_id` INSERTs are blocked at the DB with Postgres `42501`. Vault wrappers (`vault_create/update/read/delete_secret`, all SECURITY DEFINER) own token encryption — the vault schema is intentionally NOT exposed via PostgREST; access is service-role-only.
 
 ### Secret Rotation
 
@@ -85,7 +85,7 @@ Rotate `LITELLM_MASTER_KEY`:
 
 ## 4. Google Chat Notifications
 
-Substituted for Slack in LENS's profile — Google Chat is the team notification channel.
+Google Chat is the team notification channel; webhooks fan out from deploy + infra events.
 
 ### Spaces
 
@@ -120,5 +120,5 @@ Google Chat webhooks rotate by deleting the webhook in the space and recreating 
 | `GOOGLE_OAUTH_CLIENT_SECRET` | Vercel per env + `.env.local` | Annually |
 | `TRELLO_API_KEY` (public-ish app key, not a secret per se but env-managed) | Vercel per env + `.env.local` | Rarely (when re-issuing the Trello app) |
 | `GCHAT_WEBHOOK_*` | Vercel production | On webhook recreation |
-| `GITHUB_PAT` | `~/.zshrc` (agent-side) | Every 90 days |
-| `SUPABASE_ACCESS_TOKEN` | `~/.zshrc` (agent-side) | Every 90 days |
+| `GITHUB_PAT` | Developer machine env (e.g. `~/.zshrc`) | Every 90 days |
+| `SUPABASE_ACCESS_TOKEN` | Developer machine env (e.g. `~/.zshrc`) | Every 90 days |

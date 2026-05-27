@@ -1,8 +1,8 @@
 # Playbook: Browser Testing (Devtools-class MCP + Automation-class MCP)
 
-Canonical project-local reference for browser validation in `LENS`. Both MCPs are configured locally and invoked via the Claude Code MCP layer. This playbook is the authoritative project-local guide — skills and agents point here. The 42agents-level guideline at `{shared_knowledge_path}/reference/guidelines-browser-testing.md` is the parent doc; this file inherits its rules and adds project-specific URLs, accounts, and paths.
+Canonical reference for browser validation in LENS. Both MCPs are configured locally and invoked via the Claude Code MCP layer. This playbook is authoritative; skills and agents point here.
 
-**When it's mandatory:** every block that touches UI or visible browser behavior — i.e. any block whose acceptance criteria include a rendered surface, an interactive flow, or observable browser-side state (DOM, console, network, perf).
+**When it's mandatory:** every change that touches UI or visible browser behavior — i.e. any work whose acceptance criteria include a rendered surface, an interactive flow, or observable browser-side state (DOM, console, network, perf).
 
 ---
 
@@ -74,7 +74,7 @@ Each recipe lists the tool-call shape (abstract — actual parameters vary by to
 
 **Goal:** capture a baseline screenshot of a rendered route.
 
-- Automation-class: `browser_navigate` → `browser_take_screenshot` → save to `~/Downloads/b{id}-{check}-{timestamp}.png`.
+- Automation-class: `browser_navigate` → `browser_take_screenshot` → save to `~/Downloads/{topic}-{check}-{timestamp}.png`.
 - Devtools-class: `navigate_page` → `take_screenshot` → same save path.
 
 ### R2 — Fill form, submit, assert redirect (automation-class)
@@ -104,7 +104,7 @@ performance_stop_trace()
 performance_analyze_insight(trace)     // summarize
 ```
 
-Save trace JSON to `~/Downloads/b{id}-perf-{timestamp}.json`. Include the top-N insight findings in the block's VERIFIED lines.
+Save trace JSON to `~/Downloads/{topic}-perf-{timestamp}.json`. Include the top-N insight findings in your PR description or test notes.
 
 ### R4 — Console error audit during a flow (either)
 
@@ -122,7 +122,7 @@ Save a JSON dump of the console output. Any error = BLOCKER for the flow.
 - Devtools-class: `list_network_requests` → `get_network_request(id)` → inspect body.
 - Automation-class: `browser_network_requests` → filter by URL → inspect.
 
-Save as `~/Downloads/b{id}-network-{timestamp}.json`.
+Save as `~/Downloads/{topic}-network-{timestamp}.json`.
 
 ### R6 — Lighthouse audit on a deployed URL (devtools-class)
 
@@ -132,7 +132,7 @@ Save as `~/Downloads/b{id}-network-{timestamp}.json`.
 lighthouse_audit(url, categories=[performance, accessibility, best-practices, seo])
 ```
 
-Save report to `~/Downloads/b{id}-lighthouse-{timestamp}.json`. Block merges on regressions relative to the prior baseline.
+Save report to `~/Downloads/{topic}-lighthouse-{timestamp}.json`. Block merges on regressions relative to the prior baseline.
 
 ### R7 — Attach to existing dev-server session (devtools-class)
 
@@ -151,10 +151,10 @@ take_screenshot()
 
 All evidence saves to `~/Downloads` (project-specific — default `~/Downloads/`; gitignored or out of repo entirely). Configure automation-class MCP with `--output-dir ~/Downloads` so `browser_take_screenshot` lands there automatically. Devtools-class MCP may require passing an absolute `filePath` arg to `take_screenshot`.
 
-**File naming:** `b{block-id}-{check}-{timestamp}.{ext}` — e.g.:
-- `b01-02-t3-login-smoke-20260423-1530.png`
-- `b02-01-t5-checkout-flow-20260423-1602.png`
-- `b03-04-t7-console-20260423-1745.json`
+**File naming:** `{topic}-{check}-{timestamp}.{ext}` — e.g.:
+- `login-smoke-20260423-1530.png`
+- `checkout-flow-20260423-1602.png`
+- `console-20260423-1745.json`
 
 **Timestamp format:** `YYYYMMDD-HHMM` (UTC is preferred; local is fine if consistent within a run).
 
@@ -165,10 +165,7 @@ All evidence saves to `~/Downloads` (project-specific — default `~/Downloads/`
 - Perf trace when the performance gate is in scope
 - Lighthouse report when perf regression is a risk
 
-**Linkage into block docs:**
-- `skill-block-completion.md` Acceptance Criteria Verification — cite the evidence path in the `VERIFIED: {evidence}` column.
-- `skill-block-completion.md` User Verification List — cite the evidence path so the user can open the screenshot directly.
-- Review cycles — browser evidence is required for any UI-touching block.
+Attach evidence paths to the PR description so reviewers (and the merge author) can open the screenshots directly. Browser evidence is required for any UI-touching change.
 
 ---
 
@@ -194,8 +191,4 @@ Any workaround that "does the validation without either MCP" (e.g., manual curl 
 | Automation-class tab count drift between runs | `browser_tabs` to enumerate; close orphan tabs with `browser_close` |
 | Devtools-class `attach_to_session` fails | The target tab's DevTools protocol slot may already be claimed — close DevTools UI on that tab and retry |
 
-If troubleshooting takes more than one pass, apply the §7 fallback rule and note the failure in the block's evidence file.
-
----
-
-**Last updated:** 2026-04-28 — initial scaffold from 42Agents template.
+If troubleshooting takes more than one pass, apply the §7 fallback rule and note the failure in the PR description.
