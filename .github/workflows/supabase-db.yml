@@ -36,7 +36,25 @@ concurrency:
   group: supabase-db-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  check-config:
+    runs-on: ubuntu-latest
+    outputs:
+      configured: ${{ steps.c.outputs.configured }}
+    steps:
+      - id: c
+        env:
+          REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          if [ -n "$REF" ]; then
+            echo "configured=true" >> $GITHUB_OUTPUT
+          else
+            echo "configured=false" >> $GITHUB_OUTPUT
+            echo "::notice::SUPABASE_PROJECT_REF not configured — skipping migration workflow. Set the secret on your fork to enable."
+          fi
+
   supabase-db-sync:
+    needs: check-config
+    if: needs.check-config.outputs.configured == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
