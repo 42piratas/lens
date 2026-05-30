@@ -7,7 +7,7 @@ import {
   vaultReadSecret,
 } from "@/lib/supabase/vault";
 
-type Provider = "google" | "trello";
+type Provider = "google" | "trello" | "github";
 
 type ExistingTokenRow = {
   access_token_secret_id: string;

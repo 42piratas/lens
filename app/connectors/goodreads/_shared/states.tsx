@@ -17,12 +17,14 @@ const ERROR_LABEL: Record<IntegrationErrorKind, string> = {
   "rate-limit": "Rate limit",
   network: "Network",
   unknown: "Error",
+  "not-found": "Not found",
 };
 const ERROR_SUB: Record<IntegrationErrorKind, string> = {
   auth: "Goodreads shelf is private — set profile to public",
   "rate-limit": "Shelf unavailable",
   network: "Shelf unavailable",
   unknown: "Shelf unavailable",
+  "not-found": "Shelf unavailable",
 };
 
 export function GoodreadsErrorPill({ error }: { error: unknown }) {

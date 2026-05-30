@@ -1,6 +1,19 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
+// b02-15 moved Google to per-user tokens; refreshFromDb reads the refresh token
+// via readOAuthTokens inside a withUser scope. Stub both for these unit tests.
+vi.mock("@/lib/auth/user-context", () => ({ getUserIdOrThrow: () => "u1" }));
+vi.mock("@/lib/auth/persist-oauth-tokens", () => ({
+  readOAuthTokens: vi.fn(async () => ({
+    accessToken: "at",
+    refreshToken: "rt",
+    expiresAt: null,
+    scopes: [],
+  })),
+  updateAccessToken: vi.fn(async () => {}),
+}));
+import { readOAuthTokens } from "@/lib/auth/persist-oauth-tokens";
 
 import { _resetSheetsCache, getCell, getRange } from "@/connectors/google-sheets/client";
 import { _resetGoogleTokenCache } from "@/connectors/_shared/google-oauth";
@@ -136,8 +149,8 @@ describe("google-sheets client", () => {
     });
   });
 
-  it("throws auth IntegrationError when env vars missing", async () => {
-    delete process.env.GOOGLE_CALENDAR_REFRESH_TOKEN;
+  it("throws auth IntegrationError when the Google connection is missing", async () => {
+    vi.mocked(readOAuthTokens).mockResolvedValueOnce(null);
     await expect(getRange({ spreadsheetId: "x", range: "A1" })).rejects.toMatchObject({
       name: "IntegrationError",
       kind: "auth",

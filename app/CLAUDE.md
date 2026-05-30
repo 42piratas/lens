@@ -2,7 +2,7 @@
 
 # LENS — app/
 
-Next.js application for LENS, a personal PMS dashboard. Fixed **20×20 viewport-fit** grid of generic tiles. Each card is a `(connector, tile)` pair: connectors provide data, tiles render it. Tile types are folder-modular under `app/tiles/`; connectors are folder-modular under `app/connectors/`. Phase 2 ships Google Calendar, Sheets, Tasks, Keep, Trello, Scratchpad, Goodreads, and Trakt as connectors and 14 tile types (`calendar-*`, `task-*`, `kanban-board`, `note-*`, `media-list`, `data-*`, `badges-with-descriptions`). Keep is read-only and Workspace-gated via a service account + domain-wide delegation; the picker hides it for users outside the configured Workspace (b02-12). OKR connectors land later.
+Next.js application for LENS, a personal PMS dashboard. Fixed **20×20 viewport-fit** grid of generic tiles. Each card is a `(connector, tile)` pair: connectors provide data, tiles render it. Tile types are folder-modular under `app/tiles/`; connectors are folder-modular under `app/connectors/`. Phase 2 ships Google Calendar, Sheets, Tasks, Keep, Trello, Scratchpad, Goodreads, Trakt, and GitHub as connectors and 17 tile types (`calendar-*`, `task-*`, `kanban-board`, `note-*`, `media-list`, `data-*`, `badges-with-descriptions`, `gh-*`). Keep is read-only and Workspace-gated via a service account + domain-wide delegation; the picker hides it for users outside the configured Workspace (b02-12). OKR connectors land later.
 
 This file is the technical spec for the app subdir.
 
@@ -100,6 +100,7 @@ lens/                    ← repo root
     │   ├── README.md        ← contract docs + how-to-add
     │   ├── _template/       ← reference template (excluded from registry)
     │   ├── _shared/         ← cross-connector helpers — google-oauth.ts, integration-error.ts
+    │   ├── github/          ← GitHub App (read-only, per-repo, b02-13) — manifest, auth, client (GraphQL prs/issues + REST notifications), types, hooks/use-github-{prs,issues,notifications}, _shared/{states,utils}, api/{prs,issues,notifications}, config, README. Connect flow lives at app/api/auth/github/{start,callback}; user-to-server token in oauth_tokens (provider "github"). Three single-connector tiles (gh-*).
     │   ├── goodreads/       ← auth-free RSS — manifest, hooks/use-shelf, tiles/media-list (adapter), api/shelf (b02-08), config, README
     │   ├── google-calendar/ ← OAuth — manifest, dates, hooks/{calendars,events,colors}, _shared/{states,utils}, payload-adapters/{tag-like,clip-like,note-like}, api/{calendars,events} (b02-08), config, README
     │   ├── google-sheets/   ← OAuth — manifest, hooks/{range,cell,metadata}, tiles/{data-chart-line,badges-with-descriptions} (adapters), api/{range,cell,metadata} (b02-08), config, README
@@ -139,6 +140,7 @@ lens/                    ← repo root
     │   ├── _shared/         ← TileSkeleton, TileEmpty, TileUnconfigured, TileErrorPill (used by shared tiles)
     │   ├── calendar-{one-day,one-week,one-month,many-weeks}/ ← single-connector — Calendar
     │   ├── data-{stat,table,chart-line}/                     ← Sheets — chart uses visx + theme-tokenized palette
+    │   ├── gh-{pr-list,issue-list,notification-list}/        ← single-connector — GitHub (b02-13); CI-status dots map to --label-{green,red,yellow,gray}
     │   ├── kanban-board/                                     ← single-connector — Trello
     │   ├── note-{cards,buffer}/                              ← cards = Keep; buffer = Scratchpad
     │   ├── media-list/                                       ← shared (Goodreads + Trakt) — 4 display variants
@@ -170,7 +172,8 @@ lens/                    ← repo root
     └── supabase/migrations/
         ├── 0001_init_auth.sql      ← b02-15 — schema (next_auth.* + public.users/oauth_tokens/layouts/scratchpad/pending_writes), RLS policies, vault_create/update wrappers
         ├── 0002_vault_read_rpc.sql ← b02-15 — vault_read_secret + vault_delete_secret SECURITY DEFINER wrappers (vault schema not exposed to PostgREST)
-        └── 0003_pinboards.sql      ← b02-11 — public.pinboards (singleton per user, jsonb state envelope) + owner-only RLS + service-role grant
+        ├── 0003_pinboards.sql      ← b02-11 — public.pinboards (singleton per user, jsonb state envelope) + owner-only RLS + service-role grant
+        └── 0004_github_oauth_provider.sql ← b02-13 — widen oauth_tokens provider CHECK to include 'github' (no new columns/policies; inherits the b02-15 oauth_tokens RLS)
 ```
 
 ## Tile model
@@ -429,6 +432,11 @@ pnpm lint:check                # b02-08 — gen:registries:check + orphan-regist
 | `/api/trakt/list` | ✅ b02-04-04 | Server-side Trakt API proxy — public lists; takes `username`, `slug`, optional `limit` 1–50, optional `metaOnly=1` for the topbar denormalization fetch |
 | `/api/keep/notes` | ✅ b02-12 | Lists Workspace user's notes (recent or `?label=…`). Wrapped with `authedRoute`; calls Keep REST API v1. |
 | `/api/keep/labels` | ✅ b02-12 | Harvests distinct label names from the user's recent notes (Keep v1 has no labels endpoint). |
+| `/api/auth/github/start` | ✅ b02-13 | Sets CSRF `state` cookie; redirects to the GitHub App install+authorize URL (`apps/<slug>/installations/new`). |
+| `/api/auth/github/callback` | ✅ b02-13 | Verifies `state`; exchanges `code` for a user-to-server token (server-side, App client secret); persists to oauth_tokens (provider `github`); redirects to /settings. |
+| `/api/github/prs` | ✅ b02-13 | `authedRoute` GET — PR-act-on queue via GraphQL search + CI-status rollup; 60s cache. |
+| `/api/github/issues` | ✅ b02-13 | `authedRoute` GET — issues per repo (GraphQL repository node) or org (search); 404→not-found pill for un-installed repos. |
+| `/api/github/notifications` | ✅ b02-13 | `authedRoute` GET — notifications inbox via REST (`GET /notifications`); GraphQL has no inbox. |
 | `/api/local/{okrs,weight,scratchpad,layout,macro-tracks}` | ⏳ Phase 2 | Supabase-backed local CRUD |
 
 ## Google Calendar (dev-mode OAuth)
@@ -476,6 +484,18 @@ Operator setup, env-var schema, and module layout live in **`connectors/trello/R
 - Trello label colors (10 named hues) are mapped to the 42labs DS palette in `globals.css` (`.lens-trello-label--{color}` classes); raw Trello hex never enters the DOM.
 - Feeds 3 tiles: `task-list` + `task-due` (shared with Google Tasks, registered via `tileAdapters`) + `kanban-board` (single-connector, Trello-specific layout). Adapters at `connectors/trello/tiles/{task-list,task-due}.tsx`.
 - Config UI: universal panel `gear` → board dropdown (mandatory) → per-tile options (`task-list` → list dropdown · `kanban-board` → multi-select list filter · `task-due` → window slider 1–60 days). Changing the board clears the tile-specific selection and triggers re-fetch.
+
+## GitHub (GitHub App — read-only, per-repo, b02-13)
+
+Operator setup, permission list, and module layout live in **`connectors/github/README.md`**. Quick recap:
+
+- **Second external identity** after Google. Connects as a post-sign-in **connection** (not a sign-in provider), implemented as a **GitHub App** installation + **user-to-server** authorization — *not* a classic OAuth App. The App declares **read-only** permissions and lets the user pick **which repos** to expose; a classic OAuth App's `repo` scope is all-or-nothing (full read+write to every private repo), which the App model avoids.
+- **No private key in V1.** All reads use the user-to-server token, which is itself bounded by the App's read-only permissions + the installed repos (block b02-13 D9). Installation-token / JWT minting is deferred (only needed to act as the App with no user present).
+- **Connect flow** (auth concern, lives outside the connector folder): `/api/auth/github/start` sets a CSRF `state` cookie and redirects to `github.com/apps/<slug>/installations/new`; `/api/auth/github/callback` verifies `state`, exchanges `code` for the token server-side (App client secret, never client-side), and persists to `oauth_tokens` (`provider = "github"`, no refresh, no expiry — "Expire user tokens" is left off on the App). Three env vars: `GITHUB_APP_CLIENT_ID` / `GITHUB_APP_CLIENT_SECRET` / `GITHUB_APP_SLUG`.
+- **Three single-connector tiles** (like `kanban-board`, no shared adapter): `gh-pr-list` (PR-act-on queue + CI-status dot), `gh-issue-list` (per repo/org), `gh-notification-list` (inbox). Hooks import the connector directly.
+- **GraphQL for PRs + issues** (nested data, status rollup, one round-trip); **REST for notifications** (GitHub's GraphQL API has no notifications inbox). 60s in-memory cache keyed by `(userId, mode, filters)`.
+- **`not-found` error kind** (added to the shared `IntegrationErrorKind`): an `issues`/`prs` query against a repo the user didn't add to the installation maps to a friendly "repo not in your GitHub connection" pill instead of a 500.
+- RLS is inherited — github tokens live in the same `oauth_tokens` table under the same b02-15 `next_auth.uid() = user_id` policy; migration `0004` only widens the `provider` CHECK constraint.
 
 ## Goodreads (per-shelf RSS, auth-free)
 

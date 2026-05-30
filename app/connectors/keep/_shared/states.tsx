@@ -15,6 +15,7 @@ const ERROR_LABEL: Record<IntegrationErrorKind, string> = {
   "rate-limit": "Rate limit",
   network: "Network error",
   unknown: "Error",
+  "not-found": "Not found",
 };
 
 export function KeepErrorPill({ error }: { error: unknown }) {

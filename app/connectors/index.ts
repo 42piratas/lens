@@ -4,6 +4,7 @@
 // To add a connector: copy `_template/`, edit the manifest, run `pnpm gen:registries`.
 //
 import type { ConnectorManifest } from "./types";
+import { manifest as githubManifest } from "./github/manifest";
 import { manifest as goodreadsManifest } from "./goodreads/manifest";
 import { manifest as googleCalendarManifest } from "./google-calendar/manifest";
 import { manifest as googleSheetsManifest } from "./google-sheets/manifest";
@@ -14,6 +15,7 @@ import { manifest as traktManifest } from "./trakt/manifest";
 import { manifest as trelloManifest } from "./trello/manifest";
 
 const allManifests: ConnectorManifest<unknown>[] = [
+  githubManifest as ConnectorManifest<unknown>,
   goodreadsManifest as ConnectorManifest<unknown>,
   googleCalendarManifest as ConnectorManifest<unknown>,
   googleSheetsManifest as ConnectorManifest<unknown>,

@@ -1,6 +1,18 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
+// b02-15 moved Google to per-user tokens; refreshFromDb reads the refresh token
+// via readOAuthTokens inside a withUser scope. Stub both for these unit tests.
+vi.mock("@/lib/auth/user-context", () => ({ getUserIdOrThrow: () => "u1" }));
+vi.mock("@/lib/auth/persist-oauth-tokens", () => ({
+  readOAuthTokens: vi.fn(async () => ({
+    accessToken: "at",
+    refreshToken: "rt",
+    expiresAt: null,
+    scopes: [],
+  })),
+  updateAccessToken: vi.fn(async () => {}),
+}));
 
 import {
   _resetCalendarCache,

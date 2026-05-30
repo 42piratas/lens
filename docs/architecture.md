@@ -16,9 +16,10 @@ LENS is built around **five modular surfaces**. Almost every contribution adds a
 
 A connector provides **data**. Each connector is a self-contained folder under `app/connectors/<id>/` with a single manifest, an auth strategy, a server-side client, optional per-tile adapters, and route handlers.
 
-Five connector shapes ship today:
+Six connector shapes ship today:
 
 - **External + OAuth** — Google Calendar, Google Sheets, Google Tasks (per-user OAuth via Auth.js v5; tokens encrypted in Supabase Vault).
+- **External + GitHub App connection** — GitHub (b02-13). A post-sign-in connection backed by a **GitHub App** installation + user-to-server token, *not* a classic OAuth App: the App declares read-only permissions and the user selects which repos to expose, avoiding the all-or-nothing `repo` scope. The token is the second external identity alongside Google; it lives in `oauth_tokens` (`provider = "github"`) under the same RLS. No private key in V1 (reads use the user-to-server token only).
 - **External + API key** — Trello (key + token), Trakt (`TRAKT_CLIENT_ID`).
 - **External + auth-free** — Goodreads (per-shelf RSS, public profiles only).
 - **External + service-account / domain-wide delegation** — Google Keep (Workspace-only; the Keep API isn't in the user-OAuth scope catalog, so a Workspace admin grants the SA `keep.readonly` and LENS impersonates `session.user.email`).

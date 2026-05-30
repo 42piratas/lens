@@ -1,17 +1,20 @@
 # Supabase migrations
 #
-# v1 model: a single Supabase project serves both PR previews and production.
-# That means any `supabase db push` run from CI applies directly to the
-# production database. To prevent half-baked migrations from landing on prod
-# the moment a PR opens, this workflow is split:
+# This repo is the PUBLIC OSS canon (`42piratas/lens`). It must NOT carry the
+# owner's Supabase credentials — the personal instance + its Supabase project
+# live in the PRIVATE `lens-app` repo, which is where migrations actually link
+# and apply. So every Supabase-touching step here is gated on the presence of
+# `SUPABASE_PROJECT_REF`:
 #
-#   - on pull_request → lint only (no `db push`)
-#   - on push to main (post-merge) → lint + apply
-#   - workflow_dispatch → manual apply (emergency / out-of-band)
+#   - No secrets (public canon, forks) → link/lint/apply are SKIPPED; the job
+#     passes. Migration SQL is validated on the private instance (its CI) and
+#     locally via `supabase db push`.
+#   - Secrets present (private instance) → link + lint always; apply only on
+#     push-to-main / manual dispatch (never on a PR).
 #
-# When a separate `lens-prod` Supabase project is split out (see playbook §1),
-# point main-branch CI at lens-staging and gate the lens-prod apply on a
-# release-tag push or manual dispatch.
+# Single Supabase project serves preview + prod for v1; when `lens-prod` is
+# split out (playbook §1), point main-branch CI at lens-staging and gate the
+# lens-prod apply on a release tag or manual dispatch.
 name: supabase-db
 on:
   pull_request:
@@ -67,31 +70,48 @@ jobs:
           echo "migrations=$MIGRATIONS" >> "$GITHUB_OUTPUT"
           echo "seed=$SEED" >> "$GITHUB_OUTPUT"
 
+      - name: Detect linkable Supabase secrets
+        id: linked
+        env:
+          REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          # The public canon repo carries no Supabase secrets — only the private
+          # instance does. Gate all link/lint/apply steps on the ref's presence.
+          if [ -n "$REF" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No SUPABASE_PROJECT_REF on this repo — skipping link/lint/apply (this is the OSS canon; migrations apply on the private instance)."
+          fi
+
       - uses: supabase/setup-cli@v1
+        if: steps.linked.outputs.present == 'true'
         with:
           version: latest
 
       - name: Link Supabase project
+        if: steps.linked.outputs.present == 'true'
         run: supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_REF }} --workdir app
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
 
       - name: Apply migrations
-        if: steps.gate.outputs.apply == 'true'
+        if: steps.linked.outputs.present == 'true' && steps.gate.outputs.apply == 'true'
         run: supabase db push --linked --include-all --workdir app
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
 
       - name: Lint database schema
+        if: steps.linked.outputs.present == 'true'
         run: supabase db lint --linked --fail-on error
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_WORKDIR: app
 
       - name: Apply seed
-        if: steps.gate.outputs.apply == 'true' && steps.changes.outputs.seed != '0'
+        if: steps.linked.outputs.present == 'true' && steps.gate.outputs.apply == 'true' && steps.changes.outputs.seed != '0'
         run: psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -f app/supabase/seed.sql
         env:
           SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
