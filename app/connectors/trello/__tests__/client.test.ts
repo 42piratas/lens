@@ -1,6 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
+// b02-15 moved connectors to per-user tokens (getUserIdOrThrow + readOAuthTokens);
+// these tests run outside a withUser scope, so stub the user context + token read.
+vi.mock("@/lib/auth/user-context", () => ({ getUserIdOrThrow: () => "u1" }));
+vi.mock("@/lib/auth/persist-oauth-tokens", () => ({
+  readOAuthTokens: async () => ({
+    accessToken: "tok",
+    refreshToken: null,
+    expiresAt: null,
+    scopes: [],
+  }),
+}));
 
 import {
   _resetTrelloCache,
