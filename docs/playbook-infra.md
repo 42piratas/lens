@@ -8,11 +8,11 @@ Operational guide for infrastructure, secrets, and services. Keep this current.
 
 ### Projects
 
-| Environment | Project | URL |
-|-------------|---------|-----|
-| Production (v1) | single Supabase project | see `NEXT_PUBLIC_SUPABASE_URL` in `.env.local` / Vercel env |
+| Environment | Project | Ref | URL |
+|-------------|---------|-----|-----|
+| Production (v1) | `LENS` | `feeeshmybyksicxxurep` | `https://feeeshmybyksicxxurep.supabase.co` (also `NEXT_PUBLIC_SUPABASE_URL` in `.env.local` / Vercel env) |
 
-For v1 / single-user, one Supabase project serves both the `main` branch (= production deploy) and any preview deploys. A separate `lens-prod` project will be split out when traffic / multi-tenant load arrives.
+For v1 / single-user, one Supabase project serves both the `main` branch (= production deploy) and any preview deploys. A separate `lens-prod` project will be split out when traffic / multi-tenant load arrives. The project ref is **not secret** (it's the Supabase subdomain) — recover it any time with `supabase projects list` (needs `SUPABASE_ACCESS_TOKEN`).
 
 ### Migrations
 
@@ -25,6 +25,21 @@ Because v1 runs a single Supabase project, migrations are gated to avoid feature
 - **`workflow_dispatch`** → manual apply (set input `apply=true` for emergency / out-of-band runs)
 
 When a separate `lens-prod` project is split out, point `main`-branch CI at `lens-staging` and gate the `lens-prod` apply on a release tag or manual dispatch.
+
+#### Migration CI — GitHub repo secrets (`42piratas/lens`)
+
+`supabase-db.yml` runs on any PR/push that touches `app/supabase/migrations/**`. It needs these **GitHub Actions repo secrets** set on `42piratas/lens` (Settings → Secrets and variables → Actions, or `gh secret set <NAME> -R 42piratas/lens`):
+
+| Secret | Needed for | Source |
+|--------|-----------|--------|
+| `SUPABASE_ACCESS_TOKEN` | link + lint (every run) | developer machine env / Supabase dashboard → Account → Access Tokens |
+| `SUPABASE_PROJECT_REF` | link + lint (every run) | `feeeshmybyksicxxurep` (not secret) |
+| `SUPABASE_DB_PASSWORD` | **apply only** (`db push` on `main`) | Supabase dashboard → Project → Database → password (or reset) |
+| `SUPABASE_DB_URL` | **apply only** (`psql` seed, if `seed.sql` changed) | Supabase dashboard → Project → Connect → connection string |
+
+**Read-only runs need only `SUPABASE_ACCESS_TOKEN` + `SUPABASE_PROJECT_REF`.** The current Supabase CLI mints a temporary login role from the access token for `link` / `db lint`, so a PR's lint-only path passes without a DB password; `SUPABASE_DB_PASSWORD` / `SUPABASE_DB_URL` are only consumed by the `apply == true` (push-to-`main`) path. (Pattern mirrored from the hiresling.ai infra playbook §migration-drift.)
+
+> **Gotcha (fixed 2026-05-30, b02-13):** when the app repo was migrated `lens-app` → `lens` on GitHub, the four Supabase secrets did **not** carry over, so any migration PR red-X'd at "Link Supabase project" with `required flag(s) "project-ref" not set`. `SUPABASE_ACCESS_TOKEN` + `SUPABASE_PROJECT_REF` were re-added to `42piratas/lens`; **`SUPABASE_DB_PASSWORD` + `SUPABASE_DB_URL` still need to be added before the next `main`-branch migration apply.**
 
 ### RLS
 
@@ -121,4 +136,8 @@ Google Chat webhooks rotate by deleting the webhook in the space and recreating 
 | `TRELLO_API_KEY` (public-ish app key, not a secret per se but env-managed) | Vercel per env + `.env.local` | Rarely (when re-issuing the Trello app) |
 | `GCHAT_WEBHOOK_*` | Vercel production | On webhook recreation |
 | `GITHUB_PAT` | Developer machine env (e.g. `~/.zshrc`) | Every 90 days |
-| `SUPABASE_ACCESS_TOKEN` | Developer machine env (e.g. `~/.zshrc`) | Every 90 days |
+| `SUPABASE_ACCESS_TOKEN` | Developer machine env (e.g. `~/.zshrc`) **+ GitHub repo secret on `42piratas/lens`** (migration CI) | Every 90 days |
+| `SUPABASE_PROJECT_REF` | GitHub repo secret on `42piratas/lens` (migration CI) — value `feeeshmybyksicxxurep`, not secret | Stable (project lifetime) |
+| `SUPABASE_DB_PASSWORD` | GitHub repo secret on `42piratas/lens` (migration **apply** only) + Supabase dashboard | On breach |
+| `SUPABASE_DB_URL` | GitHub repo secret on `42piratas/lens` (migration **seed** only) + Supabase dashboard → Connect | On breach |
+| `GITHUB_APP_CLIENT_ID` / `GITHUB_APP_CLIENT_SECRET` / `GITHUB_APP_SLUG` | Vercel per env + `.env.local` (b02-13 GitHub connector) | On App credential reset |
