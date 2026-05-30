@@ -15,6 +15,7 @@ const ERROR_LABEL: Record<IntegrationErrorKind, string> = {
   "rate-limit": "Rate limit",
   network: "Network",
   unknown: "Error",
+  "not-found": "Not found",
 };
 
 export function TrelloErrorPill({ error }: { error: unknown }) {

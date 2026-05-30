@@ -6,7 +6,7 @@ import { signIn } from "next-auth/react";
 import { SettingsSection } from "../SettingsSection";
 
 type Connection = {
-  provider: "google" | "trello";
+  provider: "google" | "trello" | "github";
   expires_at: string | null;
   scopes: string[] | null;
   updated_at: string;
@@ -30,6 +30,14 @@ const PROVIDERS: Array<{
     description: "Boards, lists, cards, label writes",
     connect: () => {
       window.location.href = "/api/auth/trello/start";
+    },
+  },
+  {
+    id: "github",
+    label: "GitHub",
+    description: "PRs, issues, notifications (read-only; you pick the repos)",
+    connect: () => {
+      window.location.href = "/api/auth/github/start";
     },
   },
 ];

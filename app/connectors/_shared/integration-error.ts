@@ -1,4 +1,9 @@
-export type IntegrationErrorKind = "auth" | "rate-limit" | "network" | "unknown";
+export type IntegrationErrorKind =
+  | "auth"
+  | "rate-limit"
+  | "network"
+  | "not-found"
+  | "unknown";
 
 export class IntegrationError extends Error {
   kind: IntegrationErrorKind;

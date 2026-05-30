@@ -15,6 +15,7 @@ const ERROR_LABEL: Record<IntegrationErrorKind, string> = {
   "rate-limit": "Rate limit",
   network: "Network",
   unknown: "Error",
+  "not-found": "Not found",
 };
 
 const ERROR_SUB: Record<IntegrationErrorKind, string> = {
@@ -22,6 +23,7 @@ const ERROR_SUB: Record<IntegrationErrorKind, string> = {
   "rate-limit": "List unavailable",
   network: "List unavailable",
   unknown: "List unavailable",
+  "not-found": "List unavailable",
 };
 
 export function TraktErrorPill({ error }: { error: unknown }) {

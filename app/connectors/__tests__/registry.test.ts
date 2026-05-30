@@ -3,9 +3,10 @@ import { getConnectors, getConnector } from "@/connectors";
 import { getTile, getTiles } from "@/tiles";
 
 describe("connector registry", () => {
-  it("registers all eight connectors (Keep now first-class, Workspace-gated at runtime)", () => {
+  it("registers all nine connectors (Keep now first-class, Workspace-gated at runtime)", () => {
     const list = getConnectors();
     expect(list.map((c) => c.id).sort()).toEqual([
+      "github",
       "goodreads",
       "google-calendar",
       "google-sheets",
@@ -14,6 +15,22 @@ describe("connector registry", () => {
       "scratchpad",
       "trakt",
       "trello",
+    ]);
+  });
+
+  it("github declares three single-connector tiles and no shared adapters", () => {
+    const github = getConnector("github");
+    expect(github).toBeDefined();
+    expect([...(github?.tiles ?? [])].sort()).toEqual([
+      "gh-issue-list",
+      "gh-notification-list",
+      "gh-pr-list",
+    ]);
+    expect(github?.tileAdapters).toBeUndefined();
+    expect(github?.auth.envVars).toEqual([
+      "GITHUB_APP_CLIENT_ID",
+      "GITHUB_APP_CLIENT_SECRET",
+      "GITHUB_APP_SLUG",
     ]);
   });
 
@@ -96,7 +113,7 @@ describe("connector registry", () => {
 });
 
 describe("tile registry", () => {
-  it("registers all 14 tiles (badges + 4 calendar + 3 data + kanban + media + 2 note + 2 task)", () => {
+  it("registers all 17 tiles (badges + 4 calendar + 3 data + 3 github + kanban + media + 2 note + 2 task)", () => {
     expect(
       getTiles()
         .map((t) => t.id)
@@ -110,6 +127,9 @@ describe("tile registry", () => {
       "data-chart-line",
       "data-stat",
       "data-table",
+      "gh-issue-list",
+      "gh-notification-list",
+      "gh-pr-list",
       "kanban-board",
       "media-list",
       "note-buffer",

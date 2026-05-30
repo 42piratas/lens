@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { deleteOAuthTokens } from "@/lib/auth/persist-oauth-tokens";
 
-type Provider = "google" | "trello";
+type Provider = "google" | "trello" | "github";
 
 /**
  * Returns the connected providers for the signed-in user. Token plaintext
@@ -49,7 +49,7 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "invalid json" }, { status: 400 });
   }
   const provider = (payload as { provider?: string } | null)?.provider as Provider | undefined;
-  if (provider !== "google" && provider !== "trello") {
+  if (provider !== "google" && provider !== "trello" && provider !== "github") {
     return NextResponse.json({ error: "invalid provider" }, { status: 422 });
   }
   await deleteOAuthTokens({ userId, provider });

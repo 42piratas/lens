@@ -14,6 +14,9 @@ import { manifest as calendarOneWeekManifest } from "./calendar-one-week/manifes
 import { manifest as dataChartLineManifest } from "./data-chart-line/manifest";
 import { manifest as dataStatManifest } from "./data-stat/manifest";
 import { manifest as dataTableManifest } from "./data-table/manifest";
+import { manifest as ghIssueListManifest } from "./gh-issue-list/manifest";
+import { manifest as ghNotificationListManifest } from "./gh-notification-list/manifest";
+import { manifest as ghPrListManifest } from "./gh-pr-list/manifest";
 import { manifest as kanbanBoardManifest } from "./kanban-board/manifest";
 import { manifest as mediaListManifest } from "./media-list/manifest";
 import { manifest as noteBufferManifest } from "./note-buffer/manifest";
@@ -30,6 +33,9 @@ const manifests: TileManifest<unknown>[] = [
   dataChartLineManifest as TileManifest<unknown>,
   dataStatManifest as TileManifest<unknown>,
   dataTableManifest as TileManifest<unknown>,
+  ghIssueListManifest as TileManifest<unknown>,
+  ghNotificationListManifest as TileManifest<unknown>,
+  ghPrListManifest as TileManifest<unknown>,
   kanbanBoardManifest as TileManifest<unknown>,
   mediaListManifest as TileManifest<unknown>,
   noteBufferManifest as TileManifest<unknown>,
