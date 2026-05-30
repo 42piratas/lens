@@ -1,0 +1,32 @@
+# Canon hook discipline (worktree-mandatory + integration-branch protection +
+# pre-push reachability) lives in .githooks/pre-commit and .githooks/pre-push.
+# We invoke them through lefthook because this repo already uses lefthook for
+# commitlint + typecheck — overriding core.hooksPath=.githooks would silently
+# disable both. See ~/42labs/42agents/shared-knowledge/skills/skill-git-multi-agent.md
+# §Hook integration patterns for the canon snippet.
+#
+# ⚠ After any `lefthook install`, re-run `scripts/setup-repo.sh` to ensure
+#   core.hooksPath has not been re-set to .githooks (which would break us again).
+
+pre-commit:
+  commands:
+    canon-pre-commit:
+      run: bash .githooks/pre-commit
+      fail_text: "Canon pre-commit failed (see principles-base.md §14)"
+
+commit-msg:
+  commands:
+    commitlint:
+      root: "app/"
+      run: npx commitlint --edit {1}
+      fail_text: "Commit message does not follow Conventional Commits"
+
+pre-push:
+  commands:
+    canon-pre-push:
+      run: bash .githooks/pre-push "$1" "$2"
+      fail_text: "Canon pre-push failed (see principles-base.md §14)"
+    typecheck:
+      root: "app/"
+      run: npx tsc --noEmit
+      fail_text: "TypeScript errors — fix before pushing"
